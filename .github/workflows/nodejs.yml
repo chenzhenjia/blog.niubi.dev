@@ -6,18 +6,34 @@ on:
       - master
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+      with:
+        submodules: true
     - name: Use Node.js 10.x
       uses: actions/setup-node@v1
       with:
         node-version: '10.x'
-    - name: npm install, build
+    - name: npm install
       run: |
         npm install
-        npm run build 
+    - name: npm build
+      run: npm run clean && npm run build 
+    - name: deploy
+      run: |
+        mkdir -p $HOME/.ssh
+        touch "$HOME/.ssh/known_hosts"
+        
+        echo "${{ secrets.GITHUB_ACTION_PRIVATE_KEY }}" > $HOME/.ssh/deploy_key
+        chmod 700 $HOME/.ssh
+        chmod 600 $HOME/.ssh/deploy_key
+        chmod 600 $HOME/.ssh/known_hosts
+        eval $(ssh-agent)
+        ssh-add $HOME/.ssh/deploy_key
+        ssh-keyscan 47.52.**.** > $HOME/.ssh/known_hosts
+        git config --global user.name 'chenzhenjia'
+        git config --global user.email 'chenzhenjia@gmail.com'
+        
         npm run deploy
-      env:
-        CI: true
