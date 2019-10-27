@@ -15,7 +15,7 @@ timezone:
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
 url: https://blog1.niubi.dev
 root: /
-permalink: :year/:month/:day/:title/
+permalink: :title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing index.html from permalinks
@@ -55,7 +55,7 @@ highlight:
 # order_by: Posts order. (Order by date descending by default)
 index_generator:
   path: ''
-  per_page: 10
+  per_page: 3
   order_by: -date
 
 # Category & Tag
@@ -85,8 +85,8 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: next
-Plugins:
-# - hexo-generator-sitemap
+plugins:
+  # - hexo-generator-sitemap
 
 pjax: false
 # Deployment
@@ -99,3 +99,4 @@ deploy:
 #sitemap
 sitemap:
   path: sitemap.xml
+exclude:
