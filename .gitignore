@@ -8,3 +8,4 @@ public/
 yarn.lock
 package-lock.json
 .deploy_git/
+source/_drafts
