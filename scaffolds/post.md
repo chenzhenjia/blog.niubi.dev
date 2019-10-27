@@ -9,4 +9,6 @@ toc: true
 mathjax: true
 summary:
 categories:
+typora-copy-images-to: ../images
+typora-root-url: ../
 ---
