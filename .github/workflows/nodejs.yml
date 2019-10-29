@@ -34,7 +34,7 @@ jobs:
         chmod 600 $HOME/.ssh/known_hosts
         eval $(ssh-agent)
         ssh-add $HOME/.ssh/deploy_key
-        ssh-keyscan 47.52.**.** > $HOME/.ssh/known_hosts
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
         git config --global user.name 'chenzhenjia'
         git config --global user.email 'chenzhenjia@gmail.com'
         
