@@ -21,12 +21,15 @@ jobs:
         npm install
     - name: npm build
       run: npm run clean && npm run build 
+    - name: env prepare
+      env:
+        DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}  
     - name: deploy
       run: |
         mkdir -p $HOME/.ssh
         touch "$HOME/.ssh/known_hosts"
         
-        echo "${{ secrets.DEPLOY_KEY }}" > $HOME/.ssh/deploy_key
+        echo "$DEPLOY_KEY" > $HOME/.ssh/deploy_key
         chmod 700 $HOME/.ssh
         chmod 600 $HOME/.ssh/deploy_key
         chmod 600 $HOME/.ssh/known_hosts
