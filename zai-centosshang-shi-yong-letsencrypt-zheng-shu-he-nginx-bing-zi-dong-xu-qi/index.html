@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-2592788502290192",
+          enable_page_level_ads: true
+     });
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="陈先森" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="先安装 Nginx1.执行命令 1vim &#x2F;etc&#x2F;yum.repos.d&#x2F;nginx.repo   在英文状态下按 i 进入编辑模式，把一下代码贴进去，然后保存  12345[nginx]name=nginx repobaseurl=http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;centos&#x2F;$releasever&#x2F;$basearch&#x2F;gpgcheck=0enabled=1  3.最后执行">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.niubi.dev&#x2F;zai-centosshang-shi-yong-letsencrypt-zheng-shu-he-nginx-bing-zi-dong-xu-qi&#x2F;index.html">
+<meta property="og:site_name" content="陈先森">
+<meta property="og:description" content="先安装 Nginx1.执行命令 1vim &#x2F;etc&#x2F;yum.repos.d&#x2F;nginx.repo   在英文状态下按 i 进入编辑模式，把一下代码贴进去，然后保存  12345[nginx]name=nginx repobaseurl=http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;centos&#x2F;$releasever&#x2F;$basearch&#x2F;gpgcheck=0enabled=1  3.最后执行">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-10-14T07:36:21.000Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.niubi.dev/zai-centosshang-shi-yong-letsencrypt-zheng-shu-he-nginx-bing-zi-dong-xu-qi/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期 | 陈先森</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107997548-2"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !false) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107997548-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈先森</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.niubi.dev/zai-centosshang-shi-yong-letsencrypt-zheng-shu-he-nginx-bing-zi-dong-xu-qi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="陈先森">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈先森">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2017-10-13 23:19:00" itemprop="dateCreated datePublished" datetime="2017-10-13T23:19:00+00:00">2017-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2017-10-14 07:36:21" itemprop="dateModified" datetime="2017-10-14T07:36:21+00:00">2017-10-14</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="先安装-Nginx"><a href="#先安装-Nginx" class="headerlink" title="先安装 Nginx"></a>先安装 Nginx</h3><p>1.执行命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/yum.repos.d/nginx.repo</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在英文状态下按 i 进入编辑模式，把一下代码贴进去，然后保存</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[nginx]</span><br><span class="line">name=nginx repo</span><br><span class="line">baseurl=http://nginx.org/packages/centos/$releasever/$basearch/</span><br><span class="line">gpgcheck=0</span><br><span class="line">enabled=1</span><br></pre></td></tr></table></figure>
+
+<p>3.最后执行命令安装 Nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx -y</span><br></pre></td></tr></table></figure>
+
+<p>4.查看 Nginx 是否安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -V</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果提示 command not found 则表示安装失败</p>
+</blockquote>
+<p>5.配置你要申请证书域名到 Nginx</p>
+<blockquote>
+<p>编辑 /etc/nginx/conf.d/blog.ai5suoai.com.conf<br><strong>注意把路径后面的域名换为自己的域名</strong><br>注意 <strong>server_name</strong> 需要些自己的域名</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name blog.ai5suoai.com;</span><br><span class="line">  location / &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>6.启动 Nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/nginx start</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>访问你的地址看是否显示 Nginx 的欢迎页面，如果显示则表示启动成功。到了这就可以开始安装letsencrypt工具了<br>7.附加选项，开机启动 Nginx</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig nginx on</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="安装-letsencrypt-的工具"><a href="#安装-letsencrypt-的工具" class="headerlink" title="安装 letsencrypt 的工具"></a>安装 letsencrypt 的工具</h3><blockquote>
+<p>官网教程 <a href="https://certbot.eff.org/#centos6-nginx" target="_blank" rel="noopener">打开链接</a></p>
+</blockquote>
+<ol>
+<li>下载 letsencrypt 执行文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://dl.eff.org/certbot-auto</span><br><span class="line">chmod a+x certbot-auto</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果你想以后直接使用 certbot-auto 的话需要把 certbot-auto 移动到 <code>/usr/local/bin/</code> 下这样就可以自己执行 <code>certbot-auto</code> 命令了</p>
+</blockquote>
+<h3 id="申请证书"><a href="#申请证书" class="headerlink" title="申请证书"></a>申请证书</h3><ol>
+<li>开始申请证书<blockquote>
+<p>注意域名要写你自己的域名</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./certbot-auto certonly --webroot -w /usr/share/nginx/html -d blog.ai5suoai.com</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>成功的话会在 <code>/etc/letsencrypt/live/</code> 路径下面后一个你的域名的文件夹。</p>
+</blockquote>
+</li>
+<li>配置 Nginx 的 https<blockquote>
+<p>修改 /etc/nginx/conf.d/blog.ai5suoai.com.conf<br>把之前的配置删掉不要,注意路径为你自己写的配置文件路径<br>注意修改域名，还有证书路径</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"># 强制 https</span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name blog.ai5suoai.com;</span><br><span class="line">  server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line">    server_name blog.ai5suoai.com;</span><br><span class="line">    return 301 https://blog.ai5suoai.com;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    server_name blog.ai5suoai.com;</span><br><span class="line">    # 成功的日志文件，注意路径</span><br><span class="line">    access_log   /var/log/nginx/blog.ai5suoai.com.log  main;</span><br><span class="line">    # 失败的日志文件，注意路径</span><br><span class="line">    error_log   /var/log/nginx/blog.ai5suoai.com.error.log;</span><br><span class="line">    listen 443 ssl http2;</span><br><span class="line">      # 证书，注意路径</span><br><span class="line">      ssl_certificate /etc/letsencrypt/live/blog.ai5suoai.com/fullchain.pem;</span><br><span class="line">      # 私钥，注意路径</span><br><span class="line">      ssl_certificate_key /etc/letsencrypt/live/blog.ai5suoai.com/privkey.pem;</span><br><span class="line"></span><br><span class="line">      ssl_session_cache shared:le_nginx_SSL:1m;</span><br><span class="line">      ssl_session_timeout 1440m;</span><br><span class="line">      ssl_session_tickets off;</span><br><span class="line"></span><br><span class="line">      ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</span><br><span class="line">      ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">      ssl_ciphers &quot;ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS&quot;;</span><br><span class="line"></span><br><span class="line">      ssl_stapling on;</span><br><span class="line">      ssl_stapling_verify on;</span><br><span class="line"></span><br><span class="line">      add_header Strict-Transport-Security &quot;max-age=15768000; includeSubdomains; preload&quot;;</span><br><span class="line">      add_header X-Frame-Options DENY;</span><br><span class="line">      add_header X-Content-Type-Options nosniff;</span><br><span class="line">    # 这里根据实际情况  </span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /usr/share/nginx/html;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>刷新 Nginx 配置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/init.d/nginx reload</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>访问你的域名看是否出现 https。</p>
+</blockquote>
+<h3 id="自动续期证书"><a href="#自动续期证书" class="headerlink" title="自动续期证书"></a>自动续期证书</h3><blockquote>
+<p>由于证书只有90天有效，所以需要续期</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/zai-oh-my-zsh-li-mian-pei-zhi-ming-ling-de-bie-ming/" rel="next" title="在 Oh-my-zsh 里面配置命令的别名">
+                  <i class="fa fa-chevron-left"></i> 在 Oh-my-zsh 里面配置命令的别名
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/zai-gradle-shi-yong-spring-data-mongo-bing-pei-zhi-querydsl/" rel="prev" title="在 gradle 使用 spring-data-mongo 并配置 querydsl">
+                  在 gradle 使用 spring-data-mongo 并配置 querydsl <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-2592788502290192"
+     data-ad-slot="6268039078"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#先安装-Nginx"><span class="nav-number">1.</span> <span class="nav-text">先安装 Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-letsencrypt-的工具"><span class="nav-number">2.</span> <span class="nav-text">安装 letsencrypt 的工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#申请证书"><span class="nav-number">3.</span> <span class="nav-text">申请证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动续期证书"><span class="nav-number">4.</span> <span class="nav-text">自动续期证书</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <!--
+<div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">陈先森</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+-->
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈先森</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '197e119ba76d77f2bcf2',
+      clientSecret: 'd92b77f001a28251376f8859eea00d96ed1eaf75',
+      repo: 'blog.niubi.dev',
+      owner: 'chenzhenjia',
+      admin: ['chenzhenjia'],
+      id: 'efd11a4c0dd55d0418f48bb64faa03b1',
+        language: 'zh-CN',
+      distractionFreeMode: 'false'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

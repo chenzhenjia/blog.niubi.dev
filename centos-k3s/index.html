@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-2592788502290192",
+          enable_page_level_ads: true
+     });
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="陈先森" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="介绍 k3sk3s 是Rancher Labs（以下简称Rancher）宣布推出轻量级Kubernetes发行版K3s（已开源），这款产品专为在资源有限的环境中运行Kubernetes的研发和运维人员设计。Rancher此次发布的K3s项目，将满足在边缘计算环境中运行在x86、ARM64和ARMv7处理器上的小型、易于管理的Kubernetes集群日益增长的需求。 开始安装 安装 docker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 centos 上搭建k3s 集群">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.niubi.dev&#x2F;centos-k3s&#x2F;index.html">
+<meta property="og:site_name" content="陈先森">
+<meta property="og:description" content="介绍 k3sk3s 是Rancher Labs（以下简称Rancher）宣布推出轻量级Kubernetes发行版K3s（已开源），这款产品专为在资源有限的环境中运行Kubernetes的研发和运维人员设计。Rancher此次发布的K3s项目，将满足在边缘计算环境中运行在x86、ARM64和ARMv7处理器上的小型、易于管理的Kubernetes集群日益增长的需求。 开始安装 安装 docker">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-09-01T04:55:48.000Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.niubi.dev/centos-k3s/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>在 centos 上搭建k3s 集群 | 陈先森</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107997548-2"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !false) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107997548-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈先森</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.niubi.dev/centos-k3s/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="陈先森">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈先森">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          在 centos 上搭建k3s 集群
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-08-24 15:38:25" itemprop="dateCreated datePublished" datetime="2019-08-24T15:38:25+00:00">2019-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-09-01 04:55:48" itemprop="dateModified" datetime="2019-09-01T04:55:48+00:00">2019-09-01</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="介绍-k3s"><a href="#介绍-k3s" class="headerlink" title="介绍 k3s"></a>介绍 k3s</h2><p>k3s 是Rancher Labs（以下简称Rancher）宣布推出轻量级Kubernetes发行版K3s（已开源），这款产品专为在资源有限的环境中运行Kubernetes的研发和运维人员设计。Rancher此次发布的K3s项目，将满足在边缘计算环境中运行在x86、ARM64和ARMv7处理器上的小型、易于管理的Kubernetes集群日益增长的需求。</p>
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><ol>
+<li><p>安装 docker<br> <a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener"> 官方文档 </a><br> 这里推荐使用官方的脚本一键安装</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ curl -fsSL https://get.docker.com -o get-docker.sh</span><br><span class="line">$ sudo sh get-docker.sh</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果你想使用 k3s 默认的 contanerd 容器可以跳过，但是由于我对 contanerd 不熟悉所以我在这里使用的是 docker</p>
+</blockquote>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<p><ins class="adsbygoogle"
+  style="display:block; text-align:center;"
+  data-ad-layout="in-article"
+  data-ad-format="fluid"
+  data-ad-client="ca-pub-2592788502290192"
+  data-ad-slot="6268039078"></ins></p>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script></li>
+<li><p>安装 k3s server<br> 安装 k3s server 有几种方式，由于 k3s 的执行文件是是放在 github上的，但是在中国由于网速不好可能会导致下载不下来，所以可以先使用其它工具下载可执行文件然后上传到服务器上的  <code>/usr/local/bin</code> 目录下，然后执行 <code>chmod 0755 /usr/local/bin/k3s</code> 命令给与执行权限</p>
+<p> 直接下载安装: </p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=<span class="string">"server --no-deploy traefik --docker"</span> sh -s -</span><br></pre></td></tr></table></figure>
+
+<p> 自己下载安装:</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=<span class="string">"server --no-deploy traefik --docker"</span> INSTALL_K3S_BIN_DIR=<span class="string">"/usr/local/bin"</span> INSTALL_K3S_SKIP_DOWNLOAD=<span class="literal">true</span> sh -s -</span><br></pre></td></tr></table></figure>
+
+<p> 参数说明:<br> <strong>INSTALL_K3S_EXEC</strong> k3s 启动的参数  <em>–no-deploy traefik</em> 是说不需要部署 traefik ingress，_–docker_是说使用 docker 容器<br> <strong>INSTALL_K3S_BIN _DIR</strong>k3s 可执行文件的目录<br> <strong>INSTALL_K3S_SKIP _DOWNLOAD</strong> true 跳过下载k3s 可执行文件</p>
+<p> 查看 k3s server 是否安装成功</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl status k3s</span><br></pre></td></tr></table></figure>
+<p> 如果k3s 的状态为运行的话说明成功<br> 获取节点列表验证</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get nodes</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 k3s-agent<br>首先在 k3s 的 server 服务器上查看节点的 token</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat /var/lib/rancher/k3s/server/node-token</span><br></pre></td></tr></table></figure>
+<p>输出为 <em>xxxxxxx::node:xxxxxx</em><br>进入到 需要安装 agent 节点服务器执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=<span class="string">"agent --docker"</span>  K3S_URL=https://192.168.0.1:6443 K3S_TOKEN=xxxxxxx::node:xxxxxx sh -s -</span><br></pre></td></tr></table></figure>
+<p>如果是自己下载并上传的话执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC=<span class="string">"agent --docker"</span> INSTALL_K3S_BIN_DIR=<span class="string">"/usr/local/bin"</span> K3S_URL=https://192.168.0.1:6443 K3S_TOKEN=xxxxxxx::node:xxxxxx INSTALL_K3S_SKIP_DOWNLOAD=<span class="literal">true</span> sh -s -</span><br></pre></td></tr></table></figure>
+
+<p>参数基本都是一样的,现在多加了一个 <em>K3S_TOKEN</em> 和 <em>K3S_URL</em> 参数<br><strong>K3S_TOKEN</strong> 是主节点的 token<br><strong>K3S_URL</strong> 是主节点的 ip 地址和端口一般 https 和 6443 是默认的</p>
+<p>验证安装:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl status k3s-agent</span><br></pre></td></tr></table></figure>
+<p>如果 <em>Active: active (running)</em> 说明启动成功<br>进入k3s server 的服务器查看子节点是否添加成功</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl get nodes</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果列出了 agent 的节点说明安装成功,如果没有请检查 url 和 token 是否正确，并检查 agent 和 server 的网络是否能相互连接,还有就是 server 的防火墙是否打开了 6443端口</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>当 agent 已经加入到了集群，但是发现部署在 server 里面的 pod 不能访问 agent 里面的 pod，发现 dns 是正常的，说明就是网络问题,进过搜索发现只要在 server 服务器和 agent 服务器执行 <code>sudo iptable -F</code> 就行</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/golang-zai-windows-shang-tong-shi-bian-yi-64wei-he-32wei-ke-zhi-xing-cheng-xu/" rel="next" title="Golang 在 Windows 上同时编译64位和32位可执行程序">
+                  <i class="fa fa-chevron-left"></i> Golang 在 Windows 上同时编译64位和32位可执行程序
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/spring-boot-vuejs-and-react-history-router-2/" rel="prev" title="Spring Boot 配置VueJs 或者 React的history路由">
+                  Spring Boot 配置VueJs 或者 React的history路由 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-2592788502290192"
+     data-ad-slot="6268039078"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍-k3s"><span class="nav-number">1.</span> <span class="nav-text">介绍 k3s</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始安装"><span class="nav-number">2.</span> <span class="nav-text">开始安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#遇到的问题"><span class="nav-number">3.</span> <span class="nav-text">遇到的问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <!--
+<div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">陈先森</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+-->
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈先森</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '197e119ba76d77f2bcf2',
+      clientSecret: 'd92b77f001a28251376f8859eea00d96ed1eaf75',
+      repo: 'blog.niubi.dev',
+      owner: 'chenzhenjia',
+      admin: ['chenzhenjia'],
+      id: '43414c632c97c70387d272d6e2c10590',
+        language: 'zh-CN',
+      distractionFreeMode: 'false'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

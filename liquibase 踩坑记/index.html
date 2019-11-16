@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-2592788502290192",
+          enable_page_level_ads: true
+     });
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="陈先森" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="liquibase 踩坑记liquibase 是跨多种数据库平台的数据库迁移和初始化工具，但是在迁移到其它数据库平台的时候会遇到各种字段类型不一致导致出错。由于我使用的是 SpringBoot 和 hibernate，并且在 hibernate 初始化的时候打开了 validate，所以从不同数据库迁移会出问题。 uuid 出错的问题当在 hibernate 里面使用了 uuid 的时候，在pos">
+<meta property="og:type" content="article">
+<meta property="og:title" content="liquibase 踩坑记">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.niubi.dev&#x2F;liquibase%20%E8%B8%A9%E5%9D%91%E8%AE%B0&#x2F;index.html">
+<meta property="og:site_name" content="陈先森">
+<meta property="og:description" content="liquibase 踩坑记liquibase 是跨多种数据库平台的数据库迁移和初始化工具，但是在迁移到其它数据库平台的时候会遇到各种字段类型不一致导致出错。由于我使用的是 SpringBoot 和 hibernate，并且在 hibernate 初始化的时候打开了 validate，所以从不同数据库迁移会出问题。 uuid 出错的问题当在 hibernate 里面使用了 uuid 的时候，在pos">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-16T12:02:15.913Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.niubi.dev/liquibase%20%E8%B8%A9%E5%9D%91%E8%AE%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>liquibase 踩坑记 | 陈先森</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107997548-2"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !false) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107997548-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈先森</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.niubi.dev/liquibase%20%E8%B8%A9%E5%9D%91%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="陈先森">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈先森">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          liquibase 踩坑记
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-11-16 12:02:15" itemprop="dateCreated datePublished" datetime="2019-11-16T12:02:15+00:00">2019-11-16</time>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="liquibase-踩坑记"><a href="#liquibase-踩坑记" class="headerlink" title="liquibase 踩坑记"></a>liquibase 踩坑记</h1><p>liquibase 是跨多种数据库平台的数据库迁移和初始化工具，但是在迁移到其它数据库平台的时候会遇到各种字段类型不一致导致出错。由于我使用的是 SpringBoot 和 hibernate，并且在 hibernate 初始化的时候打开了 validate，所以从不同数据库迁移会出问题。</p>
+<h3 id="uuid-出错的问题"><a href="#uuid-出错的问题" class="headerlink" title="uuid 出错的问题"></a>uuid 出错的问题</h3><p>当在 hibernate 里面使用了 uuid 的时候，在postgresql 里面是正常的，但是在使用 MySQL 的时候 hibernate 会报一下错误<code>found [char (Types#CHAR)], but expecting [binary(255) (Types#BINARY)]</code>  ，所以需要 liquibase 里面写上以下配置。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--  uuid 类型的定义  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"type.uuid"</span> <span class="attr">value</span>=<span class="string">"RAW(16)"</span> <span class="attr">dbms</span>=<span class="string">"oracle"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"type.uuid"</span> <span class="attr">value</span>=<span class="string">"UUID"</span> <span class="attr">dbms</span>=<span class="string">"h2"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"type.uuid"</span> <span class="attr">value</span>=<span class="string">"UNIQUEIDENTIFIER"</span> <span class="attr">dbms</span>=<span class="string">"mssql"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"type.uuid"</span> <span class="attr">value</span>=<span class="string">"BINARY(16)"</span> <span class="attr">dbms</span>=<span class="string">"mysql"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"type.uuid"</span> <span class="attr">value</span>=<span class="string">"uuid"</span> <span class="attr">dbms</span>=<span class="string">"postgresql"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然后修改 liquibase uuid 的  column 节点配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--  把之前的 type="uuid" 改为 $&#123;type.uuid&#125;  --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">column</span> <span class="attr">name</span>=<span class="string">"id"</span> <span class="attr">remarks</span>=<span class="string">"ID"</span> <span class="attr">type</span>=<span class="string">"$&#123;type.uuid&#125;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">column</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>以上配置只支持 oracle,h2,mssql,mysql,postgresql，如需要其他数据库请根据下面的类型对应表查找liquibase 对应数据库的类型</p>
+<h3 id="liquibase-对应的各个数据库类型"><a href="#liquibase-对应的各个数据库类型" class="headerlink" title="liquibase 对应的各个数据库类型"></a>liquibase 对应的各个数据库类型</h3><p>这里整合了liquibase的各个数据库对应的类型,来自 <a href="https://stackoverflow.com/a/28626825" target="_blank" rel="noopener">stackoverflow</a>，但是这里也不完全是和 hibernate 对应的，所以需要注意。</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br></pre></td><td class="code"><pre><span class="line">boolean</span><br><span class="line">MySQLDatabase: BIT(1)</span><br><span class="line">SQLiteDatabase: BOOLEAN</span><br><span class="line">H2Database: BOOLEAN</span><br><span class="line">PostgresDatabase: BOOLEAN</span><br><span class="line">UnsupportedDatabase: BOOLEAN</span><br><span class="line">DB2Database: SMALLINT</span><br><span class="line">MSSQLDatabase: [bit]</span><br><span class="line">OracleDatabase: NUMBER(1)</span><br><span class="line">HsqlDatabase: BOOLEAN</span><br><span class="line">FirebirdDatabase: SMALLINT</span><br><span class="line">DerbyDatabase: SMALLINT</span><br><span class="line">InformixDatabase: BOOLEAN</span><br><span class="line">SybaseDatabase: BIT</span><br><span class="line">SybaseASADatabase: BIT</span><br><span class="line"></span><br><span class="line">tinyint</span><br><span class="line">MySQLDatabase: TINYINT</span><br><span class="line">SQLiteDatabase: TINYINT</span><br><span class="line">H2Database: TINYINT</span><br><span class="line">PostgresDatabase: SMALLINT</span><br><span class="line">UnsupportedDatabase: TINYINT</span><br><span class="line">DB2Database: SMALLINT</span><br><span class="line">MSSQLDatabase: [tinyint]</span><br><span class="line">OracleDatabase: NUMBER(3)</span><br><span class="line">HsqlDatabase: TINYINT</span><br><span class="line">FirebirdDatabase: SMALLINT</span><br><span class="line">DerbyDatabase: SMALLINT</span><br><span class="line">InformixDatabase: TINYINT</span><br><span class="line">SybaseDatabase: TINYINT</span><br><span class="line">SybaseASADatabase: TINYINT</span><br><span class="line"></span><br><span class="line">int</span><br><span class="line">MySQLDatabase: INT</span><br><span class="line">SQLiteDatabase: INTEGER</span><br><span class="line">H2Database: INT</span><br><span class="line">PostgresDatabase: INT</span><br><span class="line">UnsupportedDatabase: INT</span><br><span class="line">DB2Database: INTEGER</span><br><span class="line">MSSQLDatabase: [int]</span><br><span class="line">OracleDatabase: INTEGER</span><br><span class="line">HsqlDatabase: INT</span><br><span class="line">FirebirdDatabase: INT</span><br><span class="line">DerbyDatabase: INTEGER</span><br><span class="line">InformixDatabase: INT</span><br><span class="line">SybaseDatabase: INT</span><br><span class="line">SybaseASADatabase: INT</span><br><span class="line"></span><br><span class="line">mediumint</span><br><span class="line">MySQLDatabase: MEDIUMINT</span><br><span class="line">SQLiteDatabase: MEDIUMINT</span><br><span class="line">H2Database: MEDIUMINT</span><br><span class="line">PostgresDatabase: MEDIUMINT</span><br><span class="line">UnsupportedDatabase: MEDIUMINT</span><br><span class="line">DB2Database: MEDIUMINT</span><br><span class="line">MSSQLDatabase: [int]</span><br><span class="line">OracleDatabase: MEDIUMINT</span><br><span class="line">HsqlDatabase: MEDIUMINT</span><br><span class="line">FirebirdDatabase: MEDIUMINT</span><br><span class="line">DerbyDatabase: MEDIUMINT</span><br><span class="line">InformixDatabase: MEDIUMINT</span><br><span class="line">SybaseDatabase: MEDIUMINT</span><br><span class="line">SybaseASADatabase: MEDIUMINT</span><br><span class="line"></span><br><span class="line">bigint</span><br><span class="line">MySQLDatabase: BIGINT</span><br><span class="line">SQLiteDatabase: BIGINT</span><br><span class="line">H2Database: BIGINT</span><br><span class="line">PostgresDatabase: BIGINT</span><br><span class="line">UnsupportedDatabase: BIGINT</span><br><span class="line">DB2Database: BIGINT</span><br><span class="line">MSSQLDatabase: [bigint]</span><br><span class="line">OracleDatabase: NUMBER(38, 0)</span><br><span class="line">HsqlDatabase: BIGINT</span><br><span class="line">FirebirdDatabase: BIGINT</span><br><span class="line">DerbyDatabase: BIGINT</span><br><span class="line">InformixDatabase: INT8</span><br><span class="line">SybaseDatabase: BIGINT</span><br><span class="line">SybaseASADatabase: BIGINT</span><br><span class="line"></span><br><span class="line">float</span><br><span class="line">MySQLDatabase: FLOAT</span><br><span class="line">SQLiteDatabase: FLOAT</span><br><span class="line">H2Database: FLOAT</span><br><span class="line">PostgresDatabase: FLOAT</span><br><span class="line">UnsupportedDatabase: FLOAT</span><br><span class="line">DB2Database: FLOAT</span><br><span class="line">MSSQLDatabase: [float](53)</span><br><span class="line">OracleDatabase: FLOAT</span><br><span class="line">HsqlDatabase: FLOAT</span><br><span class="line">FirebirdDatabase: FLOAT</span><br><span class="line">DerbyDatabase: FLOAT</span><br><span class="line">InformixDatabase: FLOAT</span><br><span class="line">SybaseDatabase: FLOAT</span><br><span class="line">SybaseASADatabase: FLOAT</span><br><span class="line"></span><br><span class="line">double</span><br><span class="line">MySQLDatabase: DOUBLE</span><br><span class="line">SQLiteDatabase: DOUBLE</span><br><span class="line">H2Database: DOUBLE</span><br><span class="line">PostgresDatabase: DOUBLE PRECISION</span><br><span class="line">UnsupportedDatabase: DOUBLE</span><br><span class="line">DB2Database: DOUBLE</span><br><span class="line">MSSQLDatabase: [float](53)</span><br><span class="line">OracleDatabase: FLOAT(24)</span><br><span class="line">HsqlDatabase: DOUBLE</span><br><span class="line">FirebirdDatabase: DOUBLE PRECISION</span><br><span class="line">DerbyDatabase: DOUBLE</span><br><span class="line">InformixDatabase: DOUBLE PRECISION</span><br><span class="line">SybaseDatabase: DOUBLE</span><br><span class="line">SybaseASADatabase: DOUBLE</span><br><span class="line"></span><br><span class="line">decimal</span><br><span class="line">MySQLDatabase: DECIMAL</span><br><span class="line">SQLiteDatabase: DECIMAL</span><br><span class="line">H2Database: DECIMAL</span><br><span class="line">PostgresDatabase: DECIMAL</span><br><span class="line">UnsupportedDatabase: DECIMAL</span><br><span class="line">DB2Database: DECIMAL</span><br><span class="line">MSSQLDatabase: [decimal](18, 0)</span><br><span class="line">OracleDatabase: DECIMAL</span><br><span class="line">HsqlDatabase: DECIMAL</span><br><span class="line">FirebirdDatabase: DECIMAL</span><br><span class="line">DerbyDatabase: DECIMAL</span><br><span class="line">InformixDatabase: DECIMAL</span><br><span class="line">SybaseDatabase: DECIMAL</span><br><span class="line">SybaseASADatabase: DECIMAL</span><br><span class="line"></span><br><span class="line">number</span><br><span class="line">MySQLDatabase: numeric</span><br><span class="line">SQLiteDatabase: NUMBER</span><br><span class="line">H2Database: NUMBER</span><br><span class="line">PostgresDatabase: numeric</span><br><span class="line">UnsupportedDatabase: NUMBER</span><br><span class="line">DB2Database: numeric</span><br><span class="line">MSSQLDatabase: [numeric](18, 0)</span><br><span class="line">OracleDatabase: NUMBER</span><br><span class="line">HsqlDatabase: numeric</span><br><span class="line">FirebirdDatabase: numeric</span><br><span class="line">DerbyDatabase: numeric</span><br><span class="line">InformixDatabase: numeric</span><br><span class="line">SybaseDatabase: numeric</span><br><span class="line">SybaseASADatabase: numeric</span><br><span class="line"></span><br><span class="line">blob</span><br><span class="line">MySQLDatabase: LONGBLOB</span><br><span class="line">SQLiteDatabase: BLOB</span><br><span class="line">H2Database: BLOB</span><br><span class="line">PostgresDatabase: BYTEA</span><br><span class="line">UnsupportedDatabase: BLOB</span><br><span class="line">DB2Database: BLOB</span><br><span class="line">MSSQLDatabase: [varbinary](MAX)</span><br><span class="line">OracleDatabase: BLOB</span><br><span class="line">HsqlDatabase: BLOB</span><br><span class="line">FirebirdDatabase: BLOB</span><br><span class="line">DerbyDatabase: BLOB</span><br><span class="line">InformixDatabase: BLOB</span><br><span class="line">SybaseDatabase: IMAGE</span><br><span class="line">SybaseASADatabase: LONG BINARY</span><br><span class="line"></span><br><span class="line">function</span><br><span class="line">MySQLDatabase: FUNCTION</span><br><span class="line">SQLiteDatabase: FUNCTION</span><br><span class="line">H2Database: FUNCTION</span><br><span class="line">PostgresDatabase: FUNCTION</span><br><span class="line">UnsupportedDatabase: FUNCTION</span><br><span class="line">DB2Database: FUNCTION</span><br><span class="line">MSSQLDatabase: [function]</span><br><span class="line">OracleDatabase: FUNCTION</span><br><span class="line">HsqlDatabase: FUNCTION</span><br><span class="line">FirebirdDatabase: FUNCTION</span><br><span class="line">DerbyDatabase: FUNCTION</span><br><span class="line">InformixDatabase: FUNCTION</span><br><span class="line">SybaseDatabase: FUNCTION</span><br><span class="line">SybaseASADatabase: FUNCTION</span><br><span class="line"></span><br><span class="line">UNKNOWN</span><br><span class="line">MySQLDatabase: UNKNOWN</span><br><span class="line">SQLiteDatabase: UNKNOWN</span><br><span class="line">H2Database: UNKNOWN</span><br><span class="line">PostgresDatabase: UNKNOWN</span><br><span class="line">UnsupportedDatabase: UNKNOWN</span><br><span class="line">DB2Database: UNKNOWN</span><br><span class="line">MSSQLDatabase: [UNKNOWN]</span><br><span class="line">OracleDatabase: UNKNOWN</span><br><span class="line">HsqlDatabase: UNKNOWN</span><br><span class="line">FirebirdDatabase: UNKNOWN</span><br><span class="line">DerbyDatabase: UNKNOWN</span><br><span class="line">InformixDatabase: UNKNOWN</span><br><span class="line">SybaseDatabase: UNKNOWN</span><br><span class="line">SybaseASADatabase: UNKNOWN</span><br><span class="line"></span><br><span class="line">datetime</span><br><span class="line">MySQLDatabase: datetime</span><br><span class="line">SQLiteDatabase: TEXT</span><br><span class="line">H2Database: TIMESTAMP</span><br><span class="line">PostgresDatabase: TIMESTAMP WITHOUT TIME ZONE</span><br><span class="line">UnsupportedDatabase: datetime</span><br><span class="line">DB2Database: TIMESTAMP</span><br><span class="line">MSSQLDatabase: [datetime]</span><br><span class="line">OracleDatabase: TIMESTAMP</span><br><span class="line">HsqlDatabase: TIMESTAMP</span><br><span class="line">FirebirdDatabase: TIMESTAMP</span><br><span class="line">DerbyDatabase: TIMESTAMP</span><br><span class="line">InformixDatabase: DATETIME YEAR TO FRACTION(5)</span><br><span class="line">SybaseDatabase: datetime</span><br><span class="line">SybaseASADatabase: datetime</span><br><span class="line"></span><br><span class="line">time</span><br><span class="line">MySQLDatabase: time</span><br><span class="line">SQLiteDatabase: time</span><br><span class="line">H2Database: time</span><br><span class="line">PostgresDatabase: TIME WITHOUT TIME ZONE</span><br><span class="line">UnsupportedDatabase: time</span><br><span class="line">DB2Database: time</span><br><span class="line">MSSQLDatabase: [time](7)</span><br><span class="line">OracleDatabase: DATE</span><br><span class="line">HsqlDatabase: time</span><br><span class="line">FirebirdDatabase: time</span><br><span class="line">DerbyDatabase: time</span><br><span class="line">InformixDatabase: INTERVAL HOUR TO FRACTION(5)</span><br><span class="line">SybaseDatabase: time</span><br><span class="line">SybaseASADatabase: time</span><br><span class="line"></span><br><span class="line">timestamp</span><br><span class="line">MySQLDatabase: timestamp</span><br><span class="line">SQLiteDatabase: TEXT</span><br><span class="line">H2Database: TIMESTAMP</span><br><span class="line">PostgresDatabase: TIMESTAMP WITHOUT TIME ZONE</span><br><span class="line">UnsupportedDatabase: timestamp</span><br><span class="line">DB2Database: timestamp</span><br><span class="line">MSSQLDatabase: [datetime]</span><br><span class="line">OracleDatabase: TIMESTAMP</span><br><span class="line">HsqlDatabase: TIMESTAMP</span><br><span class="line">FirebirdDatabase: TIMESTAMP</span><br><span class="line">DerbyDatabase: TIMESTAMP</span><br><span class="line">InformixDatabase: DATETIME YEAR TO FRACTION(5)</span><br><span class="line">SybaseDatabase: datetime</span><br><span class="line">SybaseASADatabase: timestamp</span><br><span class="line"></span><br><span class="line">date</span><br><span class="line">MySQLDatabase: date</span><br><span class="line">SQLiteDatabase: date</span><br><span class="line">H2Database: date</span><br><span class="line">PostgresDatabase: date</span><br><span class="line">UnsupportedDatabase: date</span><br><span class="line">DB2Database: date</span><br><span class="line">MSSQLDatabase: [date]</span><br><span class="line">OracleDatabase: date</span><br><span class="line">HsqlDatabase: date</span><br><span class="line">FirebirdDatabase: date</span><br><span class="line">DerbyDatabase: date</span><br><span class="line">InformixDatabase: date</span><br><span class="line">SybaseDatabase: date</span><br><span class="line">SybaseASADatabase: date</span><br><span class="line"></span><br><span class="line">char</span><br><span class="line">MySQLDatabase: CHAR</span><br><span class="line">SQLiteDatabase: CHAR</span><br><span class="line">H2Database: CHAR</span><br><span class="line">PostgresDatabase: CHAR</span><br><span class="line">UnsupportedDatabase: CHAR</span><br><span class="line">DB2Database: CHAR</span><br><span class="line">MSSQLDatabase: [char](1)</span><br><span class="line">OracleDatabase: CHAR</span><br><span class="line">HsqlDatabase: CHAR</span><br><span class="line">FirebirdDatabase: CHAR</span><br><span class="line">DerbyDatabase: CHAR</span><br><span class="line">InformixDatabase: CHAR</span><br><span class="line">SybaseDatabase: CHAR</span><br><span class="line">SybaseASADatabase: CHAR</span><br><span class="line"></span><br><span class="line">varchar</span><br><span class="line">MySQLDatabase: VARCHAR</span><br><span class="line">SQLiteDatabase: VARCHAR</span><br><span class="line">H2Database: VARCHAR</span><br><span class="line">PostgresDatabase: VARCHAR</span><br><span class="line">UnsupportedDatabase: VARCHAR</span><br><span class="line">DB2Database: VARCHAR</span><br><span class="line">MSSQLDatabase: [varchar](1)</span><br><span class="line">OracleDatabase: VARCHAR2</span><br><span class="line">HsqlDatabase: VARCHAR</span><br><span class="line">FirebirdDatabase: VARCHAR</span><br><span class="line">DerbyDatabase: VARCHAR</span><br><span class="line">InformixDatabase: VARCHAR</span><br><span class="line">SybaseDatabase: VARCHAR</span><br><span class="line">SybaseASADatabase: VARCHAR</span><br><span class="line"></span><br><span class="line">nchar</span><br><span class="line">MySQLDatabase: NCHAR</span><br><span class="line">SQLiteDatabase: NCHAR</span><br><span class="line">H2Database: NCHAR</span><br><span class="line">PostgresDatabase: NCHAR</span><br><span class="line">UnsupportedDatabase: NCHAR</span><br><span class="line">DB2Database: NCHAR</span><br><span class="line">MSSQLDatabase: [nchar](1)</span><br><span class="line">OracleDatabase: NCHAR</span><br><span class="line">HsqlDatabase: CHAR</span><br><span class="line">FirebirdDatabase: NCHAR</span><br><span class="line">DerbyDatabase: NCHAR</span><br><span class="line">InformixDatabase: NCHAR</span><br><span class="line">SybaseDatabase: NCHAR</span><br><span class="line">SybaseASADatabase: NCHAR</span><br><span class="line"></span><br><span class="line">nvarchar</span><br><span class="line">MySQLDatabase: NVARCHAR</span><br><span class="line">SQLiteDatabase: NVARCHAR</span><br><span class="line">H2Database: NVARCHAR</span><br><span class="line">PostgresDatabase: VARCHAR</span><br><span class="line">UnsupportedDatabase: NVARCHAR</span><br><span class="line">DB2Database: NVARCHAR</span><br><span class="line">MSSQLDatabase: [nvarchar](1)</span><br><span class="line">OracleDatabase: NVARCHAR2</span><br><span class="line">HsqlDatabase: VARCHAR</span><br><span class="line">FirebirdDatabase: NVARCHAR</span><br><span class="line">DerbyDatabase: VARCHAR</span><br><span class="line">InformixDatabase: NVARCHAR</span><br><span class="line">SybaseDatabase: NVARCHAR</span><br><span class="line">SybaseASADatabase: NVARCHAR</span><br><span class="line"></span><br><span class="line">clob</span><br><span class="line">MySQLDatabase: LONGTEXT</span><br><span class="line">SQLiteDatabase: TEXT</span><br><span class="line">H2Database: CLOB</span><br><span class="line">PostgresDatabase: TEXT</span><br><span class="line">UnsupportedDatabase: CLOB</span><br><span class="line">DB2Database: CLOB</span><br><span class="line">MSSQLDatabase: [varchar](MAX)</span><br><span class="line">OracleDatabase: CLOB</span><br><span class="line">HsqlDatabase: CLOB</span><br><span class="line">FirebirdDatabase: BLOB SUB_TYPE TEXT</span><br><span class="line">DerbyDatabase: CLOB</span><br><span class="line">InformixDatabase: CLOB</span><br><span class="line">SybaseDatabase: TEXT</span><br><span class="line">SybaseASADatabase: LONG VARCHAR</span><br><span class="line"></span><br><span class="line">currency</span><br><span class="line">MySQLDatabase: DECIMAL</span><br><span class="line">SQLiteDatabase: REAL</span><br><span class="line">H2Database: DECIMAL</span><br><span class="line">PostgresDatabase: DECIMAL</span><br><span class="line">UnsupportedDatabase: DECIMAL</span><br><span class="line">DB2Database: DECIMAL(19, 4)</span><br><span class="line">MSSQLDatabase: [money]</span><br><span class="line">OracleDatabase: NUMBER(15, 2)</span><br><span class="line">HsqlDatabase: DECIMAL</span><br><span class="line">FirebirdDatabase: DECIMAL(18, 4)</span><br><span class="line">DerbyDatabase: DECIMAL</span><br><span class="line">InformixDatabase: MONEY</span><br><span class="line">SybaseDatabase: MONEY</span><br><span class="line">SybaseASADatabase: MONEY</span><br><span class="line"></span><br><span class="line">uuid</span><br><span class="line">MySQLDatabase: char(36)</span><br><span class="line">SQLiteDatabase: TEXT</span><br><span class="line">H2Database: UUID</span><br><span class="line">PostgresDatabase: UUID</span><br><span class="line">UnsupportedDatabase: char(36)</span><br><span class="line">DB2Database: char(36)</span><br><span class="line">MSSQLDatabase: [uniqueidentifier]</span><br><span class="line">OracleDatabase: RAW(16)</span><br><span class="line">HsqlDatabase: char(36)</span><br><span class="line">FirebirdDatabase: char(36)</span><br><span class="line">DerbyDatabase: char(36)</span><br><span class="line">InformixDatabase: char(36)</span><br><span class="line">SybaseDatabase: UNIQUEIDENTIFIER</span><br><span class="line">SybaseASADatabase: UNIQUEIDENTIFIER</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/spring-boot-vuejs-and-react-history-router-2/" rel="next" title="Spring Boot 配置VueJs 或者 React的history路由">
+                  <i class="fa fa-chevron-left"></i> Spring Boot 配置VueJs 或者 React的history路由
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+            </div>
+          </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-2592788502290192"
+     data-ad-slot="6268039078"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#liquibase-踩坑记"><span class="nav-number">1.</span> <span class="nav-text">liquibase 踩坑记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#uuid-出错的问题"><span class="nav-number">1.0.1.</span> <span class="nav-text">uuid 出错的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#liquibase-对应的各个数据库类型"><span class="nav-number">1.0.2.</span> <span class="nav-text">liquibase 对应的各个数据库类型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <!--
+<div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">陈先森</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+-->
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈先森</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '197e119ba76d77f2bcf2',
+      clientSecret: 'd92b77f001a28251376f8859eea00d96ed1eaf75',
+      repo: 'blog.niubi.dev',
+      owner: 'chenzhenjia',
+      admin: ['chenzhenjia'],
+      id: '92f83018bf8e2ffffe0a050f888a8e90',
+        language: 'zh-CN',
+      distractionFreeMode: 'false'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>

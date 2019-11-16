@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-2592788502290192",
+          enable_page_level_ads: true
+     });
+</script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="alternate" href="/atom.xml" title="陈先森" type="application/atom+xml">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.5.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="在 Spring MVC 中上传文件后把文件保存在本地，但是数据库保存了一份路径，所有需要实现下载文件，网上的教程一般都是自己写一个Controller 去下载，但是我这里直接使用Spring MVC的 ResourceHttpRequestHandler 实现动态下载静态资源，只需一点点代码然后加一段配置就可以实现下载附件功能。 第一步自定义一个Handler，并重写 ResourceHttpR">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC 自定义静态资源下载">
+<meta property="og:url" content="https:&#x2F;&#x2F;blog.niubi.dev&#x2F;spring-mvc-zi-ding-yi-jing-tai-zi-yuan-xia-zai&#x2F;index.html">
+<meta property="og:site_name" content="陈先森">
+<meta property="og:description" content="在 Spring MVC 中上传文件后把文件保存在本地，但是数据库保存了一份路径，所有需要实现下载文件，网上的教程一般都是自己写一个Controller 去下载，但是我这里直接使用Spring MVC的 ResourceHttpRequestHandler 实现动态下载静态资源，只需一点点代码然后加一段配置就可以实现下载附件功能。 第一步自定义一个Handler，并重写 ResourceHttpR">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-09-07T15:12:35.000Z">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://blog.niubi.dev/spring-mvc-zi-ding-yi-jing-tai-zi-yuan-xia-zai/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Spring MVC 自定义静态资源下载 | 陈先森</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-107997548-2"></script>
+    <script>
+      var host = window.location.hostname;
+      if (host !== "localhost" || !false) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-107997548-2');
+      }
+    </script>
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">陈先森</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.niubi.dev/spring-mvc-zi-ding-yi-jing-tai-zi-yuan-xia-zai/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="陈先森">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="陈先森">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Spring MVC 自定义静态资源下载
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-09-04 14:18:53" itemprop="dateCreated datePublished" datetime="2018-09-04T14:18:53+00:00">2018-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2018-09-07 15:12:35" itemprop="dateModified" datetime="2018-09-07T15:12:35+00:00">2018-09-07</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在 Spring MVC 中上传文件后把文件保存在本地，但是数据库保存了一份路径，所有需要实现下载文件，网上的教程一般都是自己写一个Controller 去下载，但是我这里直接使用Spring MVC的 <code>ResourceHttpRequestHandler</code> 实现动态下载静态资源，只需一点点代码然后加一段配置就可以实现下载附件功能。</p>
+<h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h2><p>自定义一个Handler，并重写 <code>ResourceHttpRequestHandler</code> 的 <code>processPath</code> 方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@Slf4j</span><br><span class="line">public class CustomResourceHttpRequestHandler extends ResourceHttpRequestHandler &#123;</span><br><span class="line">    private final UploadRepository uploadRepository;</span><br><span class="line"></span><br><span class="line">    public CustomResourceHttpRequestHandler(UploadRepository uploadRepository) &#123;</span><br><span class="line">        this.uploadRepository = uploadRepository;</span><br><span class="line">    &#125;</span><br><span class="line">    // 重写该方法实现动态获取文件路径，而不是直接获取本地文件的路径</span><br><span class="line">    @Override</span><br><span class="line">    protected String processPath(String path) &#123;</span><br><span class="line">        Optional&lt;Upload&gt; uploadOption = uploadRepository.findById(path);</span><br><span class="line">        return uploadOption.map(Upload::getPath)</span><br><span class="line">                .orElseGet(() -&gt; &#123;</span><br><span class="line">                    log.warn(&quot;文件获取path不存在。path=&#123;&#125;&quot;, path);</span><br><span class="line">                    return  null;</span><br><span class="line">                &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="第二部配置"><a href="#第二部配置" class="headerlink" title="第二部配置"></a>第二部配置</h2><p>在 Spring Boot 中添加一下配置，注意LocationValues 的路径，必须以 <code>/</code> 结尾，访问本地文件必须有 <code>file:</code> ，不然会访问不到，报404</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public ResourceHttpRequestHandler customResourceHttpRequestHandler(UploadRepository uploadRepository) &#123;</span><br><span class="line">    ResourceHttpRequestHandler requestHandler = new </span><br><span class="line">               CustomResourceHttpRequestHandler(uploadRepository); </span><br><span class="line">    requestHandler.setLocationValues(Collections</span><br><span class="line">                      .singletonList(&quot;file:/D:/upload/&quot;));</span><br><span class="line">    // 资源缓存配置，缓存90天</span><br><span class="line">    requestHandler.setCacheControl(CacheControl.maxAge(90, TimeUnit.DAYS));</span><br><span class="line">    return requestHandler;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Bean</span><br><span class="line">public SimpleUrlHandlerMapping sampleServletMapping() &#123;</span><br><span class="line">    SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();</span><br><span class="line">    mapping.setOrder(Integer.MAX_VALUE - 2);</span><br><span class="line">    Properties urlProperties = new Properties();</span><br><span class="line">    urlProperties.put(&quot;/files/*&quot;, &quot;customResourceHttpRequestHandler&quot;);</span><br><span class="line">    mapping.setMappings(urlProperties);</span><br><span class="line">    return mapping;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>在地址栏输入地址,最后一位是数据库中 附件的id</p>
+<p><a href="http://localhost:8080/files/{id}" target="_blank" rel="noopener">http://localhost:8080/files/{id}</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+                <a href="/you-ya-kai-qi-he-guan-bi-spring-cloudxiang-mu/" rel="next" title="优雅开启和关闭Spring Cloud项目">
+                  <i class="fa fa-chevron-left"></i> 优雅开启和关闭Spring Cloud项目
+                </a>
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+                <a href="/golang-zai-windows-shang-tong-shi-bian-yi-64wei-he-32wei-ke-zhi-xing-cheng-xu/" rel="prev" title="Golang 在 Windows 上同时编译64位和32位可执行程序">
+                  Golang 在 Windows 上同时编译64位和32位可执行程序 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-2592788502290192"
+     data-ad-slot="6268039078"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#第一步"><span class="nav-number">1.</span> <span class="nav-text">第一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第二部配置"><span class="nav-number">2.</span> <span class="nav-text">第二部配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">3.</span> <span class="nav-text">测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <!--
+<div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">陈先森</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+-->
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="feed-link motion-element">
+    <a href="/atom.xml" rel="alternate">
+      <i class="fa fa-rss"></i>RSS
+    </a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈先森</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/pisces.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID: '197e119ba76d77f2bcf2',
+      clientSecret: 'd92b77f001a28251376f8859eea00d96ed1eaf75',
+      repo: 'blog.niubi.dev',
+      owner: 'chenzhenjia',
+      admin: ['chenzhenjia'],
+      id: '2216a72a89d32bbb45039349651f3993',
+        language: 'zh-CN',
+      distractionFreeMode: 'false'
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+</script>
+
+</body>
+</html>
