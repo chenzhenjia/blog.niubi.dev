@@ -30,7 +30,7 @@ theme = "LoveIt"
     title = ""
 [params]
   title = '陈'
-  description = '陈asdasdasd'
+  description = '陈'
   [params.header.title]
     name = '陈'
   [params.footer]
