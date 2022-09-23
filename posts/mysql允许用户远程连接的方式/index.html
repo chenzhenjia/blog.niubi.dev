@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>mysql允许用户远程连接的方式 - 陈</title><meta name=Description content="陈asdasdasd"><meta property="og:title" content="mysql允许用户远程连接的方式"><meta property="og:description" content="mysql允许用户远程连接的方式。 第一步（修改配置文件） vim /etc/mysql/my.cnf 找到 bind-address = 127.0.0.1
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>mysql允许用户远程连接的方式 - 陈</title><meta name=Description content="陈"><meta property="og:title" content="mysql允许用户远程连接的方式"><meta property="og:description" content="mysql允许用户远程连接的方式。 第一步（修改配置文件） vim /etc/mysql/my.cnf 找到 bind-address = 127.0.0.1
 注释掉这行，如：#bind-address = 127.0.0.1
 或者改为： bind-address = 0.0.0.0
 允许任意IP访问；

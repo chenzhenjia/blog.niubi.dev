@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期 - 陈</title><meta name=Description content="陈asdasdasd"><meta property="og:title" content="在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期"><meta property="og:description" content="安装 Nginx 1.执行命令
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期 - 陈</title><meta name=Description content="陈"><meta property="og:title" content="在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期"><meta property="og:description" content="安装 Nginx 1.执行命令
 vim /etc/yum.repos.d/nginx.repo 在英文状态下按 i 进入编辑模式，把一下代码贴进去，然后保存 [nginx] name=nginx repo baseurl=http://nginx.org/packages/centos/$releasever/$basearch/ gpgcheck=0 enabled=1 3.最后执行命令安装 Nginx
 yum install nginx -y 4.查看 Nginx 是否安装
 nginx -V 如果提示 command not found 则表示安装失败

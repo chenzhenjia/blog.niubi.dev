@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>在 coreos 上部署 Convoy docker 插件 - 陈</title><meta name=Description content="陈asdasdasd"><meta property="og:title" content="在 coreos 上部署 Convoy docker 插件"><meta property="og:description" content="前言 docker swarm 需要共享数据 coreos 相对其他 Linux 系统部署 nfs 的资料少 首先在 coreos 启用 nfs 参考 创建文件夹用来开启 nfs mkdir /mnt/nfs
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>在 coreos 上部署 Convoy docker 插件 - 陈</title><meta name=Description content="陈"><meta property="og:title" content="在 coreos 上部署 Convoy docker 插件"><meta property="og:description" content="前言 docker swarm 需要共享数据 coreos 相对其他 Linux 系统部署 nfs 的资料少 首先在 coreos 启用 nfs 参考 创建文件夹用来开启 nfs mkdir /mnt/nfs
 编辑 nfs 的 配置文件
 vim /etc/exports
 /mnt/nfs 127.0.0.1(rw,sync,no_subtree_check,no_root_squash) 在 coreos 启用 nfs 服务 systemctl enable nfs

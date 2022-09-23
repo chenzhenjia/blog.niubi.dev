@@ -1,4 +1,4 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Golang在Windows上同时编译64位和32位可执行程序 - 陈</title><meta name=Description content="陈asdasdasd"><meta property="og:title" content="Golang在Windows上同时编译64位和32位可执行程序"><meta property="og:description" content="Golang 在 Windows 上同时编译64位和32位可执行程序 需要在windows上同时编译需要64位的系统，32位只能编译32位的可执行程序。
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Golang在Windows上同时编译64位和32位可执行程序 - 陈</title><meta name=Description content="陈"><meta property="og:title" content="Golang在Windows上同时编译64位和32位可执行程序"><meta property="og:description" content="Golang 在 Windows 上同时编译64位和32位可执行程序 需要在windows上同时编译需要64位的系统，32位只能编译32位的可执行程序。
 编译32位 GOOS=windows GOARCH=386 go build main.go 编译64位 GOOS=windows GOARCH=amd64 go build main.go 遇到的问题 由于在项目中用到了sqlite所以在编译的时候报 exec: &ldquo;gcc&rdquo;: executable file not found in %PATH%，这是因为在windows上缺少 gcc,所以在windows 上需要安装 MinGW。
 下载 MinGW 进入下载页面
 下载 MinGW64，注意请选择 _x86_64-posix-seh MinGW64 8.1.0 下载地址
