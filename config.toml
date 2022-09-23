@@ -1,5 +1,6 @@
 baseURL = 'https://blog.niubi.dev/'
-languageCode = 'zh-cn'
+languageCode = 'zh-CN'
+defaultContentLanguage = 'zh-cn'
 title = '陈'
 description = '陈'
 theme = "LoveIt"
@@ -46,3 +47,4 @@ theme = "LoveIt"
   [markup.highlight]
     # false is a necessary configuration (https://github.com/dillonzq/LoveIt/issues/158)
     noClasses = false
+

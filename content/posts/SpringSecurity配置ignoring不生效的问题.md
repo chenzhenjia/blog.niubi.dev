@@ -1,6 +1,6 @@
 ---
 title: Spring Security 配置 ignoring 不生效的问题
-aliases: [spring-security-pei-zhi-ignoring-bu-sheng-xiao-de-wen-ti]
+aliases: ["/spring-security-pei-zhi-ignoring-bu-sheng-xiao-de-wen-ti/"]
 date: 2017-12-04T17:28:19+08:00
 ---
 

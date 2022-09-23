@@ -1,6 +1,6 @@
 ---
 title: 使用kubespray部署kubernetes集群
-aliases: [use-kubespray-to-deploy-the-kubernetes-cluster]
+aliases: ["/use-kubespray-to-deploy-the-kubernetes-cluster/"]
 date: 2017-11-28T10:43:40+08:00
 ---
 

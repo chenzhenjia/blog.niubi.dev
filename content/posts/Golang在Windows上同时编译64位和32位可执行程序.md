@@ -1,7 +1,7 @@
 ---
 title: "Golang在Windows上同时编译64位和32位可执行程序"
 date: 2018-11-02T18:38:39+08:00
-aliases: [golang-zai-windows-shang-tong-shi-bian-yi-64wei-he-32wei-ke-zhi-xing-cheng-xu]
+aliases: ["/golang-zai-windows-shang-tong-shi-bian-yi-64wei-he-32wei-ke-zhi-xing-cheng-xu/"]
 ---
 
 ##  Golang 在 Windows 上同时编译64位和32位可执行程序

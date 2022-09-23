@@ -1,6 +1,6 @@
 ---
 title: 解决kubespray 安装 k8s 集群的Check_certs | Set 'sync_certs' to true'  错误
-aliases: [kubespray-k8s-error-sync_certs]
+aliases: ["/kubespray-k8s-error-sync_certs/"]
 date: 2017-11-28T10:41:58+08:00
 ---
 

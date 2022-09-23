@@ -1,6 +1,6 @@
 ---
 title: k8s 安装ingress-nginx后代理kubernetes-dashboard
-aliases: [k8s-an-zhuang-ingress-nginxhou-dai-li-kubernetes-dashboard]
+aliases: ["/k8s-an-zhuang-ingress-nginxhou-dai-li-kubernetes-dashboard/"]
 date: 2018-04-30T19:06:43+08:00
 ---
 

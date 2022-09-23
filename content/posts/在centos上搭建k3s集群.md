@@ -1,6 +1,6 @@
 ---
 title: 在 centos 上搭建k3s 集群
-aliases: [centos-k3s]
+aliases: ["/centos-k3s/"]
 date: 2019-08-24T15:38:25+08:00
 ---
 

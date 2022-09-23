@@ -1,6 +1,6 @@
 ---
 title: Ubuntu16.04.5 安装 Docker
-aliases: [ubuntu16-04-5-an-zhuang-docker]
+aliases: ["/ubuntu16-04-5-an-zhuang-docker/"]
 date: 2018-08-17T09:42:29+08:00
 ---
 

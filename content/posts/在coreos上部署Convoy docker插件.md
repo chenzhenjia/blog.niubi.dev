@@ -1,6 +1,6 @@
 ---
 title: 在 coreos 上部署 Convoy docker 插件
-aliases: [zai-coreos-shang-bu-shu-convoy-docker-cha-jian]
+aliases: ["/zai-coreos-shang-bu-shu-convoy-docker-cha-jian/"]
 date: 2018-03-16T17:43:06+08:00
 ---
 

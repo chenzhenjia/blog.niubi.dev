@@ -1,6 +1,6 @@
 ---
 title: 在 gradle 使用 spring-data-mongo 并配置 querydsl
-aliases: [zai-gradle-shi-yong-spring-data-mongo-bing-pei-zhi-querydsl]
+aliases: ["/zai-gradle-shi-yong-spring-data-mongo-bing-pei-zhi-querydsl/"]
 date: 2017-10-18T09:59:12+08:00
 ---
 

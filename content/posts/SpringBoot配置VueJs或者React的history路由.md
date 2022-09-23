@@ -1,7 +1,7 @@
 ---
 title: "SpringBoot配置VueJs或者React的history路由"
 date: 2019-10-24T10:24:53+08:00
-aliases: [spring-boot-vuejs-and-react-history-router-2]
+aliases: ["/spring-boot-vuejs-and-react-history-router-2/"]
 ---
 
 一般在配置前端的文件夹的时候都会指定一个路径，如果你想使用根路径我这种方法不支持根路径，请使用另外一种支持根路径的配置方法。

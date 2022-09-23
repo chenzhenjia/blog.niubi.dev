@@ -1,6 +1,6 @@
 ---
 title: 在 Oh-my-zsh 里面配置命令的别名
-aliases: [zai-oh-my-zsh-li-mian-pei-zhi-ming-ling-de-bie-ming]
+aliases: ["/zai-oh-my-zsh-li-mian-pei-zhi-ming-ling-de-bie-ming/"]
 date: 2017-10-11T17:24:11+08:00
 ---
 

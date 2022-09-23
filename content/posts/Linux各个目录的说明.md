@@ -1,7 +1,7 @@
 ---
 title: "Linux 各个目录的说明"
 date: 2018-08-17T11:52:00+08:00
-aliases: [linux-ge-ge-mu-lu-de-shuo-ming]
+aliases: ["/linux-ge-ge-mu-lu-de-shuo-ming/"]
 ---
 
 ## 根文件系统

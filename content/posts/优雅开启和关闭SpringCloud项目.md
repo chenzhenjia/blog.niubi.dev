@@ -1,6 +1,6 @@
 ---
 title: 优雅开启和关闭Spring Cloud项目
-aliases: [you-ya-kai-qi-he-guan-bi-spring-cloudxiang-mu]
+aliases: ["/you-ya-kai-qi-he-guan-bi-spring-cloudxiang-mu/"]
 date: 2018-08-18T12:59:08+08:00
 ---
 

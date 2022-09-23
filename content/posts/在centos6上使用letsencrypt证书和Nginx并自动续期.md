@@ -1,6 +1,6 @@
 ---
 title: 在 centos6上使用 letsencrypt 证书和 Nginx 并自动续期
-aliases: [zai-centosshang-shi-yong-letsencrypt-zheng-shu-he-nginx-bing-zi-dong-xu-qi]
+aliases: ["/zai-centosshang-shi-yong-letsencrypt-zheng-shu-he-nginx-bing-zi-dong-xu-qi/"]
 date: 2017-10-13T23:19:00+08:00
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 在Linux 上安装oracle 的 sqlpuls 教程
-aliases: [zai-fu-wu-qi-shang-an-zhuang-oracle-de-sqlpuls-jiao-cheng]
+aliases: ["/zai-fu-wu-qi-shang-an-zhuang-oracle-de-sqlpuls-jiao-cheng/"]
 date: 2017-10-19T11:02:36+08:00
 ---
 

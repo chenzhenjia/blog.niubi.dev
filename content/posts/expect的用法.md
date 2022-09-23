@@ -1,6 +1,6 @@
 ---
 title: expect 的用法
-aliases: [expect-de-yong-fa]
+aliases: ["/expect-de-yong-fa/"]
 date: 2018-08-17T11:52:44+08:00
 ---
 

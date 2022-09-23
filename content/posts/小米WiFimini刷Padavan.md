@@ -1,6 +1,6 @@
 ---
 title: 小米 WiFi mini 刷Padavan
-aliases: [xiao-mi-wifi-mini-shua-padavan]
+aliases: ["/xiao-mi-wifi-mini-shua-padavan/"]
 date: 2017-11-09T10:16:22+08:00
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: mysql允许用户远程连接的方式
-aliases: [mysqlyun-xu-yong-hu-yuan-cheng-lian-jie-de-fang-shi]
+aliases: ["/mysqlyun-xu-yong-hu-yuan-cheng-lian-jie-de-fang-shi/"]
 date: 2018-08-10T22:26:17+08:00
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: 小米 mini 刷 padavan 后安装 time machine
-aliases: [xiao-mi-mini-shua-padavan-hou-an-zhuang-time-machine]
+aliases: ["/xiao-mi-mini-shua-padavan-hou-an-zhuang-time-machine/"]
 date: 2017-11-11T16:13:45+08:00
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: "Spring MVC 自定义静态资源下载"
 date: 2018-09-04T14:18:53+08:00
-aliases: [spring-mvc-zi-ding-yi-jing-tai-zi-yuan-xia-zai]
+aliases: ["/spring-mvc-zi-ding-yi-jing-tai-zi-yuan-xia-zai/"]
 ---
 
 
