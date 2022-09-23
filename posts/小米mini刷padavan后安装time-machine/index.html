@@ -1,0 +1,98 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>小米 mini 刷 padavan 后安装 time machine - 陈</title><meta name=Description content="陈asdasdasd"><meta property="og:title" content="小米 mini 刷 padavan 后安装 time machine"><meta property="og:description" content="准备工作 刷了 padavan 后的小米mini 路由器 小米 mini 刷 padavan 教程
+一个移动硬盘或者 u 盘
+把 u 盘格式化为 ext4 文件格式
+挂载 u 盘到路由器
+安装 opkg 命令和其它设置
+进入 padavan 后台 默认用户名和密码是：admin
+点击系统管理 修改管理员账号和密码为 root
+点击配置扩展环境 启用 opt 自动更新 &mdash;> 应用 开始安装 使用 ssh 进入路由器，密码为你修改后的密码 ssh root@192.168.123.1 先执行 opkg update 安装 mc, 执行 opkg install mc 安装 dbus，执行 opkg install dbus 安装和配置 avahi，执行opkg install avahi-daemon avahi-utils /opt/etc/avahi/avahi-daemon.conf 这个文件是 avahi-daemon 的配置文件，不需要管。 创建一个 /opt/etc/avahi/services/afpd.service 文件 touch /opt/etc/avahi/services/afpd."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.niubi.dev/posts/%E5%B0%8F%E7%B1%B3mini%E5%88%B7padavan%E5%90%8E%E5%AE%89%E8%A3%85time-machine/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-11-11T16:13:45+08:00"><meta property="article:modified_time" content="2017-11-11T16:13:45+08:00"><meta property="og:site_name" content="陈"><meta name=twitter:card content="summary"><meta name=twitter:title content="小米 mini 刷 padavan 后安装 time machine"><meta name=twitter:description content="准备工作 刷了 padavan 后的小米mini 路由器 小米 mini 刷 padavan 教程
+一个移动硬盘或者 u 盘
+把 u 盘格式化为 ext4 文件格式
+挂载 u 盘到路由器
+安装 opkg 命令和其它设置
+进入 padavan 后台 默认用户名和密码是：admin
+点击系统管理 修改管理员账号和密码为 root
+点击配置扩展环境 启用 opt 自动更新 &mdash;> 应用 开始安装 使用 ssh 进入路由器，密码为你修改后的密码 ssh root@192.168.123.1 先执行 opkg update 安装 mc, 执行 opkg install mc 安装 dbus，执行 opkg install dbus 安装和配置 avahi，执行opkg install avahi-daemon avahi-utils /opt/etc/avahi/avahi-daemon.conf 这个文件是 avahi-daemon 的配置文件，不需要管。 创建一个 /opt/etc/avahi/services/afpd.service 文件 touch /opt/etc/avahi/services/afpd."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.niubi.dev/posts/%E5%B0%8F%E7%B1%B3mini%E5%88%B7padavan%E5%90%8E%E5%AE%89%E8%A3%85time-machine/><link rel=prev href=https://blog.niubi.dev/posts/%E5%B0%8F%E7%B1%B3wifimini%E5%88%B7padavan/><link rel=next href=https://blog.niubi.dev/posts/%E8%A7%A3%E5%86%B3kubespray%E5%AE%89%E8%A3%85k8s%E9%9B%86%E7%BE%A4%E7%9A%84check-certs-set-sync-certs-to-true-%E9%94%99%E8%AF%AF/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css></noscript><link rel=preload href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"小米 mini 刷 padavan 后安装 time machine","inLanguage":"zh-cn","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.niubi.dev\/posts\/%E5%B0%8F%E7%B1%B3mini%E5%88%B7padavan%E5%90%8E%E5%AE%89%E8%A3%85time-machine\/"},"genre":"posts","wordcount":381,"url":"https:\/\/blog.niubi.dev\/posts\/%E5%B0%8F%E7%B1%B3mini%E5%88%B7padavan%E5%90%8E%E5%AE%89%E8%A3%85time-machine\/","datePublished":"2017-11-11T16:13:45+08:00","dateModified":"2017-11-11T16:13:45+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"陈"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=陈>陈</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=陈>陈</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">小米 mini 刷 padavan 后安装 time machine</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>陈</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2017-11-11>2017-11-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;381 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;2 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#准备工作>准备工作</a></li><li><a href=#开始安装>开始安装</a></li><li><a href=#在-mac-电脑上连接>在 Mac 电脑上连接</a></li><li><a href=#其它>其它</a></li></ul></nav></div></div><div class=content id=content><h2 id=准备工作>准备工作</h2><ol><li><p>刷了 padavan 后的小米mini 路由器
+小米 mini 刷 padavan 教程</p></li><li><p>一个移动硬盘或者 u 盘</p></li><li><p>把 u 盘格式化为 ext4 文件格式</p></li><li><p>挂载 u 盘到路由器</p></li><li><p>安装 opkg 命令和其它设置</p><ol><li><p>进入 padavan 后台
+<em>默认用户名和密码是：admin</em></p></li><li><p>点击系统管理 修改管理员账号和密码为 <code>root</code></p></li></ol><p><img class=lazyload src=/svg/loading.min.svg data-src=/images/9A1BCE5B-5BE1-4E6A-866B-7DA2D7B247D8.png data-srcset="/images/9A1BCE5B-5BE1-4E6A-866B-7DA2D7B247D8.png, /images/9A1BCE5B-5BE1-4E6A-866B-7DA2D7B247D8.png 1.5x, /images/9A1BCE5B-5BE1-4E6A-866B-7DA2D7B247D8.png 2x" data-sizes=auto alt=/images/9A1BCE5B-5BE1-4E6A-866B-7DA2D7B247D8.png title=修改管理员账号的结果></p><ol><li>点击配置扩展环境 启用 opt 自动更新 &mdash;> 应用</li></ol><p><img class=lazyload src=/svg/loading.min.svg data-src=/images/4CEB7E69-4C3C-4CC0-A765-B69D5E78D9DA.png data-srcset="/images/4CEB7E69-4C3C-4CC0-A765-B69D5E78D9DA.png, /images/4CEB7E69-4C3C-4CC0-A765-B69D5E78D9DA.png 1.5x, /images/4CEB7E69-4C3C-4CC0-A765-B69D5E78D9DA.png 2x" data-sizes=auto alt=/images/4CEB7E69-4C3C-4CC0-A765-B69D5E78D9DA.png title=结果></p></li></ol><h2 id=开始安装>开始安装</h2><ol><li>使用 ssh 进入路由器，密码为你修改后的密码
+<code>ssh root@192.168.123.1</code></li><li>先执行 <code>opkg update</code></li><li>安装 mc, 执行 <code>opkg install mc</code></li><li>安装 dbus，执行 <code>opkg install dbus</code></li><li>安装和配置 avahi，执行<code>opkg install avahi-daemon avahi-utils</code>
+<code>/opt/etc/avahi/avahi-daemon.conf</code> 这个文件是 avahi-daemon 的配置文件，不需要管。<ol><li>创建一个 <em>/opt/etc/avahi/services/afpd.service</em> 文件
+<code>touch /opt/etc/avahi/services/afpd.service</code></li><li>编辑 afpd.service 文件,把一下内容贴进去<div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=cp>&lt;?xml version=&#34;1.0&#34; standalone=&#39;no&#39;?&gt;</span>
+</span></span><span class=line><span class=cl><span class=cp>&lt;!DOCTYPE service-group SYSTEM &#34;avahi-service.dtd&#34;&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;service-group&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name</span> <span class=na>replace-wildcards=</span><span class=s>&#34;yes&#34;</span><span class=nt>&gt;</span>AFP on %h<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;service&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;type&gt;</span>_afpovertcp._tcp<span class=nt>&lt;/type&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;port&gt;</span>548<span class=nt>&lt;/port&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/service&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;service&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;type&gt;</span>_device-info._tcp<span class=nt>&lt;/type&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;port&gt;</span>0<span class=nt>&lt;/port&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=nt>&lt;txt-record&gt;</span>model=TimeMachine<span class=nt>&lt;/txt-record&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;/service&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/service-group&gt;</span>
+</span></span></code></pre></div></li><li>启动 avahi
+<code>/opt/etc/init.d/S20dbus restart</code>
+<code>/opt/etc/init.d/S42avahi-daemon restart</code></li><li>查看 avahi 是否允许
+<code>ps | grep avahi</code><pre tabindex=0><code> 5463 nobody    3144 S    avahi-daemon: running [TimeMachine.local]
+ 5541 root      1592 S    grep avahi
+</code></pre></li></ol></li><li>安装和配置 netatalk，<code>opkg install netatalk</code><ol><li>编辑配置文件
+<code>vi /opt/etc/afp.conf</code></li><li>把下面的内容贴进去，并按照你的环境修改配置<div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>[Global]
+</span></span><span class=line><span class=cl>afp listen = 192.168.123.1
+</span></span><span class=line><span class=cl>; 你路由器的 hostname ，执行 hostname 命令查看
+</span></span><span class=line><span class=cl>hostname = hostname 
+</span></span><span class=line><span class=cl>;log file = /opt/var/log/afpd.log
+</span></span><span class=line><span class=cl>;log level = default:info afpdaemon:debug uamsdaemon:info
+</span></span><span class=line><span class=cl>uam list = uams_guest.so uams_dhx.so uams_dhx2.so
+</span></span><span class=line><span class=cl>uam path = /opt/lib/uams
+</span></span><span class=line><span class=cl>mimic model = TimeCapsule6,106
+</span></span><span class=line><span class=cl>hosts allow = 192.168.123.0/16
+</span></span><span class=line><span class=cl>guest account = bobody
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[TimeMachine]
+</span></span><span class=line><span class=cl>; timemachine 的路径
+</span></span><span class=line><span class=cl>path = /media/TIMEMACHINE/
+</span></span><span class=line><span class=cl>time machine = yes
+</span></span><span class=line><span class=cl>cnid scheme = dbd
+</span></span><span class=line><span class=cl>ea = auto
+</span></span><span class=line><span class=cl>file perm = 0664 directory perm = 0775
+</span></span></code></pre></div></li><li>重启 afpd
+<code>/opt/etc/init.d/S27afpd restart</code></li></ol></li></ol><h2 id=在-mac-电脑上连接>在 Mac 电脑上连接</h2><ol><li>在 Finder 里面快捷键 <code>command + k</code></li><li>输入 <code>afp://192.168.123.1</code> 连接</li><li>使用 访客连接</li></ol><h2 id=其它>其它</h2><ol><li>参考<ol><li><a href=https://pztrn.name/blog/afp-zeroconf-timemachine-%D0%BD%D0%B0-%D0%BF%D1%80%D0%BE%D1%88%D0%B8%D0%B2%D0%BA%D0%B5-%D0%BE%D1%82-padavana/ target=_blank rel="noopener noreffer">外国人写的安装 afp 教程</a>
+我修改了他安装 avahi 的错误</li><li><a href="https://w3bsit3-dns.com/forum/index.php?showtopic=605963&st=1700" target=_blank rel="noopener noreffer">外国人写的安装 afp 教程</a>
+他好多东西都不正确，但是安装 avahi和用户配置都是参考他的</li></ol></li><li>需要用户名和密码登录 afp<ol><li>创建用户 <code>useradd timemachine</code></li><li>修改用户名的密码 <code>passwd timemachine</code>
+输入两次一样的密码</li><li>把用户添加到 afp 配置文件中<div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>[Global]
+</span></span><span class=line><span class=cl>afp listen = 192.168.123.1
+</span></span><span class=line><span class=cl>; 你路由器的 hostname ，执行 hostname 命令查看
+</span></span><span class=line><span class=cl>hostname = hostname 
+</span></span><span class=line><span class=cl>;log file = /opt/var/log/afpd.log
+</span></span><span class=line><span class=cl>;log level = default:info afpdaemon:debug uamsdaemon:info
+</span></span><span class=line><span class=cl>uam list = uams_guest.so uams_dhx.so uams_dhx2.so
+</span></span><span class=line><span class=cl>uam path = /opt/lib/uams
+</span></span><span class=line><span class=cl>mimic model = TimeCapsule6,106
+</span></span><span class=line><span class=cl>hosts allow = 192.168.123.0/16
+</span></span><span class=line><span class=cl>; 禁用客人登录
+</span></span><span class=line><span class=cl>; guest account = bobody
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>[TimeMachine]
+</span></span><span class=line><span class=cl>; timemachine 的路径
+</span></span><span class=line><span class=cl>path = /media/TIMEMACHINE/
+</span></span><span class=line><span class=cl>; 修改的地方
+</span></span><span class=line><span class=cl>valid users = timemachine
+</span></span><span class=line><span class=cl>time machine = yes
+</span></span><span class=line><span class=cl>cnid scheme = dbd
+</span></span><span class=line><span class=cl>ea = auto
+</span></span><span class=line><span class=cl>file perm = 0664 directory perm = 0775
+</span></span></code></pre></div></li></ol></li><li>遇到的一些坑<ol><li>dbus 没启动成功
+执行 <code>dbus-daemon --system</code> 查看打印日志，一般报用户或者组没找到的问题。<ol><li>修改配置，查看哪个报的是哪个用户或者组，把这个 xml 节点注释掉
+<code>/opt/etc/dbus-1/system.d/avahi-dbus.conf</code></li><li>如果报了 root 用户没找到，请去看准备工作里面的修改管理员账号的步骤，并把管理员修改为 root。</li></ol></li><li>avahi-daemon 没启动成功
+执行 <code>avahi-daemon --debug</code> 查看打印日志<ol><li>报一下错误说明 dbus 没启动<div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>WARNING: No NSS support for mDNS detected, consider installing nss-mdns!
+</span></span><span class=line><span class=cl>dbus_bus_get_private(): Failed to connect to socket /opt/var/run/dbus/system_bus_socket: No such file or directory
+</span></span><span class=line><span class=cl>WARNING: Failed to contact D-Bus daemon.
+</span></span><span class=line><span class=cl>avahi-daemon 0.6.32 exiting.
+</span></span></code></pre></div></li></ol></li></ol></li></ol></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2017-11-11</span></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/posts/%E5%B0%8F%E7%B1%B3wifimini%E5%88%B7padavan/ class=prev rel=prev title="小米 WiFi mini 刷Padavan"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>小米 WiFi mini 刷Padavan</a>
+<a href=/posts/%E8%A7%A3%E5%86%B3kubespray%E5%AE%89%E8%A3%85k8s%E9%9B%86%E7%BE%A4%E7%9A%84check-certs-set-sync-certs-to-true-%E9%94%99%E8%AF%AF/ class=next rel=next title="解决kubespray 安装 k8s 集群的Check_certs | Set 'sync_certs' to true'  错误">解决kubespray 安装 k8s 集群的Check_certs | Set 'sync_certs' to true' 错误<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5524310624522502" crossorigin=anonymous></script></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>陈</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:50},comment:{}}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>

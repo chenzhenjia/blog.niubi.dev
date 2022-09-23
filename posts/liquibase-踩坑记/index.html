@@ -1,0 +1,389 @@
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>liquibase 踩坑记 - 陈</title><meta name=Description content="陈asdasdasd"><meta property="og:title" content="liquibase 踩坑记"><meta property="og:description" content="liquibase 踩坑记 liquibase 是跨多种数据库平台的数据库迁移和初始化工具，但是在迁移到其它数据库平台的时候会遇到各种字段类型不一致导致出错。由于我使用的是 SpringBoot 和 hibernate，并且在 hibernate 初始化的时候打开了 validate，所以从不同数据库迁移会出问题。
+uuid 出错的问题 当在 hibernate 里面使用了 uuid 的时候，在postgresql 里面是正常的，但是在使用 MySQL 的时候 hibernate 会报一下错误found [char (Types#CHAR)], but expecting [binary(255) (Types#BINARY)] ，所以需要 liquibase 里面写上以下配置。
+<!-- uuid 类型的定义 --> <property name=&#34;type.uuid&#34; value=&#34;RAW(16)&#34; dbms=&#34;oracle&#34;/> <property name=&#34;type.uuid&#34; value=&#34;UUID&#34; dbms=&#34;h2&#34;/> <property name=&#34;type.uuid&#34; value=&#34;UNIQUEIDENTIFIER&#34; dbms=&#34;mssql&#34;/> <property name=&#34;type.uuid&#34; value=&#34;BINARY(16)&#34; dbms=&#34;mysql&#34;/> <property name=&#34;type.uuid&#34; value=&#34;uuid&#34; dbms=&#34;postgresql&#34;/> 然后修改 liquibase uuid 的 column 节点配置
+<!-- 把之前的 type=&#34;uuid&#34; 改为 ${type.uuid} --> <column name=&#34;id&#34; remarks=&#34;ID&#34; type=&#34;${type."><meta property="og:type" content="article"><meta property="og:url" content="https://blog.niubi.dev/posts/liquibase-%E8%B8%A9%E5%9D%91%E8%AE%B0/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2017-11-28T10:41:58+08:00"><meta property="article:modified_time" content="2017-11-28T10:41:58+08:00"><meta property="og:site_name" content="陈"><meta name=twitter:card content="summary"><meta name=twitter:title content="liquibase 踩坑记"><meta name=twitter:description content="liquibase 踩坑记 liquibase 是跨多种数据库平台的数据库迁移和初始化工具，但是在迁移到其它数据库平台的时候会遇到各种字段类型不一致导致出错。由于我使用的是 SpringBoot 和 hibernate，并且在 hibernate 初始化的时候打开了 validate，所以从不同数据库迁移会出问题。
+uuid 出错的问题 当在 hibernate 里面使用了 uuid 的时候，在postgresql 里面是正常的，但是在使用 MySQL 的时候 hibernate 会报一下错误found [char (Types#CHAR)], but expecting [binary(255) (Types#BINARY)] ，所以需要 liquibase 里面写上以下配置。
+<!-- uuid 类型的定义 --> <property name=&#34;type.uuid&#34; value=&#34;RAW(16)&#34; dbms=&#34;oracle&#34;/> <property name=&#34;type.uuid&#34; value=&#34;UUID&#34; dbms=&#34;h2&#34;/> <property name=&#34;type.uuid&#34; value=&#34;UNIQUEIDENTIFIER&#34; dbms=&#34;mssql&#34;/> <property name=&#34;type.uuid&#34; value=&#34;BINARY(16)&#34; dbms=&#34;mysql&#34;/> <property name=&#34;type.uuid&#34; value=&#34;uuid&#34; dbms=&#34;postgresql&#34;/> 然后修改 liquibase uuid 的 column 节点配置
+<!-- 把之前的 type=&#34;uuid&#34; 改为 ${type.uuid} --> <column name=&#34;id&#34; remarks=&#34;ID&#34; type=&#34;${type."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://blog.niubi.dev/posts/liquibase-%E8%B8%A9%E5%9D%91%E8%AE%B0/><link rel=prev href=https://blog.niubi.dev/posts/%E8%A7%A3%E5%86%B3kubespray%E5%AE%89%E8%A3%85k8s%E9%9B%86%E7%BE%A4%E7%9A%84check-certs-set-sync-certs-to-true-%E9%94%99%E8%AF%AF/><link rel=next href=https://blog.niubi.dev/posts/%E4%BD%BF%E7%94%A8kubespray%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/><link rel=stylesheet href=/css/style.min.css><link rel=preload href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css></noscript><link rel=preload href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"liquibase 踩坑记","inLanguage":"zh-cn","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/blog.niubi.dev\/posts\/liquibase-%E8%B8%A9%E5%9D%91%E8%AE%B0\/"},"genre":"posts","wordcount":779,"url":"https:\/\/blog.niubi.dev\/posts\/liquibase-%E8%B8%A9%E5%9D%91%E8%AE%B0\/","datePublished":"2017-11-28T10:41:58+08:00","dateModified":"2017-11-28T10:41:58+08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"陈"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=陈>陈</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/>Posts </a><a class=menu-item href=/tags/>Tags </a><a class=menu-item href=/categories/>Categories </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=陈>陈</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><a class=menu-item href=/posts/ title>Posts</a><a class=menu-item href=/tags/ title>Tags</a><a class=menu-item href=/categories/ title>Categories</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">liquibase 踩坑记</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>陈</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2017-11-28>2017-11-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;779 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;4 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#uuid-出错的问题>uuid 出错的问题</a></li><li><a href=#liquibase-对应的各个数据库类型>liquibase 对应的各个数据库类型</a></li></ul></li></ul></nav></div></div><div class=content id=content><h1 id=liquibase-踩坑记>liquibase 踩坑记</h1><p>liquibase 是跨多种数据库平台的数据库迁移和初始化工具，但是在迁移到其它数据库平台的时候会遇到各种字段类型不一致导致出错。由于我使用的是 SpringBoot 和 hibernate，并且在 hibernate 初始化的时候打开了 validate，所以从不同数据库迁移会出问题。</p><h3 id=uuid-出错的问题>uuid 出错的问题</h3><p>当在 hibernate 里面使用了 uuid 的时候，在postgresql 里面是正常的，但是在使用 MySQL 的时候 hibernate 会报一下错误<code>found [char (Types#CHAR)], but expecting [binary(255) (Types#BINARY)]</code> ，所以需要 liquibase 里面写上以下配置。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--  uuid 类型的定义  --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;type.uuid&#34;</span> <span class=na>value=</span><span class=s>&#34;RAW(16)&#34;</span> <span class=na>dbms=</span><span class=s>&#34;oracle&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;type.uuid&#34;</span> <span class=na>value=</span><span class=s>&#34;UUID&#34;</span> <span class=na>dbms=</span><span class=s>&#34;h2&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;type.uuid&#34;</span> <span class=na>value=</span><span class=s>&#34;UNIQUEIDENTIFIER&#34;</span> <span class=na>dbms=</span><span class=s>&#34;mssql&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;type.uuid&#34;</span> <span class=na>value=</span><span class=s>&#34;BINARY(16)&#34;</span> <span class=na>dbms=</span><span class=s>&#34;mysql&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property</span> <span class=na>name=</span><span class=s>&#34;type.uuid&#34;</span> <span class=na>value=</span><span class=s>&#34;uuid&#34;</span> <span class=na>dbms=</span><span class=s>&#34;postgresql&#34;</span><span class=nt>/&gt;</span>
+</span></span></code></pre></div><p>然后修改 liquibase uuid 的 column 节点配置</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=c>&lt;!--  把之前的 type=&#34;uuid&#34; 改为 ${type.uuid}  --&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;column</span> <span class=na>name=</span><span class=s>&#34;id&#34;</span> <span class=na>remarks=</span><span class=s>&#34;ID&#34;</span> <span class=na>type=</span><span class=s>&#34;${type.uuid}&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/column&gt;</span>
+</span></span></code></pre></div><p>以上配置只支持 oracle,h2,mssql,mysql,postgresql，如需要其他数据库请根据下面的类型对应表查找liquibase 对应数据库的类型</p><h3 id=liquibase-对应的各个数据库类型>liquibase 对应的各个数据库类型</h3><p>这里整合了liquibase的各个数据库对应的类型,来自 <a href=https://stackoverflow.com/a/28626825 target=_blank rel="noopener noreffer">stackoverflow</a>，但是这里也不完全是和 hibernate 对应的，所以需要注意。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>boolean
+</span></span><span class=line><span class=cl>MySQLDatabase: BIT(1)
+</span></span><span class=line><span class=cl>SQLiteDatabase: BOOLEAN
+</span></span><span class=line><span class=cl>H2Database: BOOLEAN
+</span></span><span class=line><span class=cl>PostgresDatabase: BOOLEAN
+</span></span><span class=line><span class=cl>UnsupportedDatabase: BOOLEAN
+</span></span><span class=line><span class=cl>DB2Database: SMALLINT
+</span></span><span class=line><span class=cl>MSSQLDatabase: [bit]
+</span></span><span class=line><span class=cl>OracleDatabase: NUMBER(1)
+</span></span><span class=line><span class=cl>HsqlDatabase: BOOLEAN
+</span></span><span class=line><span class=cl>FirebirdDatabase: SMALLINT
+</span></span><span class=line><span class=cl>DerbyDatabase: SMALLINT
+</span></span><span class=line><span class=cl>InformixDatabase: BOOLEAN
+</span></span><span class=line><span class=cl>SybaseDatabase: BIT
+</span></span><span class=line><span class=cl>SybaseASADatabase: BIT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>tinyint
+</span></span><span class=line><span class=cl>MySQLDatabase: TINYINT
+</span></span><span class=line><span class=cl>SQLiteDatabase: TINYINT
+</span></span><span class=line><span class=cl>H2Database: TINYINT
+</span></span><span class=line><span class=cl>PostgresDatabase: SMALLINT
+</span></span><span class=line><span class=cl>UnsupportedDatabase: TINYINT
+</span></span><span class=line><span class=cl>DB2Database: SMALLINT
+</span></span><span class=line><span class=cl>MSSQLDatabase: [tinyint]
+</span></span><span class=line><span class=cl>OracleDatabase: NUMBER(3)
+</span></span><span class=line><span class=cl>HsqlDatabase: TINYINT
+</span></span><span class=line><span class=cl>FirebirdDatabase: SMALLINT
+</span></span><span class=line><span class=cl>DerbyDatabase: SMALLINT
+</span></span><span class=line><span class=cl>InformixDatabase: TINYINT
+</span></span><span class=line><span class=cl>SybaseDatabase: TINYINT
+</span></span><span class=line><span class=cl>SybaseASADatabase: TINYINT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>int
+</span></span><span class=line><span class=cl>MySQLDatabase: INT
+</span></span><span class=line><span class=cl>SQLiteDatabase: INTEGER
+</span></span><span class=line><span class=cl>H2Database: INT
+</span></span><span class=line><span class=cl>PostgresDatabase: INT
+</span></span><span class=line><span class=cl>UnsupportedDatabase: INT
+</span></span><span class=line><span class=cl>DB2Database: INTEGER
+</span></span><span class=line><span class=cl>MSSQLDatabase: [int]
+</span></span><span class=line><span class=cl>OracleDatabase: INTEGER
+</span></span><span class=line><span class=cl>HsqlDatabase: INT
+</span></span><span class=line><span class=cl>FirebirdDatabase: INT
+</span></span><span class=line><span class=cl>DerbyDatabase: INTEGER
+</span></span><span class=line><span class=cl>InformixDatabase: INT
+</span></span><span class=line><span class=cl>SybaseDatabase: INT
+</span></span><span class=line><span class=cl>SybaseASADatabase: INT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>mediumint
+</span></span><span class=line><span class=cl>MySQLDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>SQLiteDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>H2Database: MEDIUMINT
+</span></span><span class=line><span class=cl>PostgresDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>UnsupportedDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>DB2Database: MEDIUMINT
+</span></span><span class=line><span class=cl>MSSQLDatabase: [int]
+</span></span><span class=line><span class=cl>OracleDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>HsqlDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>FirebirdDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>DerbyDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>InformixDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>SybaseDatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>SybaseASADatabase: MEDIUMINT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>bigint
+</span></span><span class=line><span class=cl>MySQLDatabase: BIGINT
+</span></span><span class=line><span class=cl>SQLiteDatabase: BIGINT
+</span></span><span class=line><span class=cl>H2Database: BIGINT
+</span></span><span class=line><span class=cl>PostgresDatabase: BIGINT
+</span></span><span class=line><span class=cl>UnsupportedDatabase: BIGINT
+</span></span><span class=line><span class=cl>DB2Database: BIGINT
+</span></span><span class=line><span class=cl>MSSQLDatabase: [bigint]
+</span></span><span class=line><span class=cl>OracleDatabase: NUMBER(38, 0)
+</span></span><span class=line><span class=cl>HsqlDatabase: BIGINT
+</span></span><span class=line><span class=cl>FirebirdDatabase: BIGINT
+</span></span><span class=line><span class=cl>DerbyDatabase: BIGINT
+</span></span><span class=line><span class=cl>InformixDatabase: INT8
+</span></span><span class=line><span class=cl>SybaseDatabase: BIGINT
+</span></span><span class=line><span class=cl>SybaseASADatabase: BIGINT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>float
+</span></span><span class=line><span class=cl>MySQLDatabase: FLOAT
+</span></span><span class=line><span class=cl>SQLiteDatabase: FLOAT
+</span></span><span class=line><span class=cl>H2Database: FLOAT
+</span></span><span class=line><span class=cl>PostgresDatabase: FLOAT
+</span></span><span class=line><span class=cl>UnsupportedDatabase: FLOAT
+</span></span><span class=line><span class=cl>DB2Database: FLOAT
+</span></span><span class=line><span class=cl>MSSQLDatabase: [float](53)
+</span></span><span class=line><span class=cl>OracleDatabase: FLOAT
+</span></span><span class=line><span class=cl>HsqlDatabase: FLOAT
+</span></span><span class=line><span class=cl>FirebirdDatabase: FLOAT
+</span></span><span class=line><span class=cl>DerbyDatabase: FLOAT
+</span></span><span class=line><span class=cl>InformixDatabase: FLOAT
+</span></span><span class=line><span class=cl>SybaseDatabase: FLOAT
+</span></span><span class=line><span class=cl>SybaseASADatabase: FLOAT
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>double
+</span></span><span class=line><span class=cl>MySQLDatabase: DOUBLE
+</span></span><span class=line><span class=cl>SQLiteDatabase: DOUBLE
+</span></span><span class=line><span class=cl>H2Database: DOUBLE
+</span></span><span class=line><span class=cl>PostgresDatabase: DOUBLE PRECISION
+</span></span><span class=line><span class=cl>UnsupportedDatabase: DOUBLE
+</span></span><span class=line><span class=cl>DB2Database: DOUBLE
+</span></span><span class=line><span class=cl>MSSQLDatabase: [float](53)
+</span></span><span class=line><span class=cl>OracleDatabase: FLOAT(24)
+</span></span><span class=line><span class=cl>HsqlDatabase: DOUBLE
+</span></span><span class=line><span class=cl>FirebirdDatabase: DOUBLE PRECISION
+</span></span><span class=line><span class=cl>DerbyDatabase: DOUBLE
+</span></span><span class=line><span class=cl>InformixDatabase: DOUBLE PRECISION
+</span></span><span class=line><span class=cl>SybaseDatabase: DOUBLE
+</span></span><span class=line><span class=cl>SybaseASADatabase: DOUBLE
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>decimal
+</span></span><span class=line><span class=cl>MySQLDatabase: DECIMAL
+</span></span><span class=line><span class=cl>SQLiteDatabase: DECIMAL
+</span></span><span class=line><span class=cl>H2Database: DECIMAL
+</span></span><span class=line><span class=cl>PostgresDatabase: DECIMAL
+</span></span><span class=line><span class=cl>UnsupportedDatabase: DECIMAL
+</span></span><span class=line><span class=cl>DB2Database: DECIMAL
+</span></span><span class=line><span class=cl>MSSQLDatabase: [decimal](18, 0)
+</span></span><span class=line><span class=cl>OracleDatabase: DECIMAL
+</span></span><span class=line><span class=cl>HsqlDatabase: DECIMAL
+</span></span><span class=line><span class=cl>FirebirdDatabase: DECIMAL
+</span></span><span class=line><span class=cl>DerbyDatabase: DECIMAL
+</span></span><span class=line><span class=cl>InformixDatabase: DECIMAL
+</span></span><span class=line><span class=cl>SybaseDatabase: DECIMAL
+</span></span><span class=line><span class=cl>SybaseASADatabase: DECIMAL
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>number
+</span></span><span class=line><span class=cl>MySQLDatabase: numeric
+</span></span><span class=line><span class=cl>SQLiteDatabase: NUMBER
+</span></span><span class=line><span class=cl>H2Database: NUMBER
+</span></span><span class=line><span class=cl>PostgresDatabase: numeric
+</span></span><span class=line><span class=cl>UnsupportedDatabase: NUMBER
+</span></span><span class=line><span class=cl>DB2Database: numeric
+</span></span><span class=line><span class=cl>MSSQLDatabase: [numeric](18, 0)
+</span></span><span class=line><span class=cl>OracleDatabase: NUMBER
+</span></span><span class=line><span class=cl>HsqlDatabase: numeric
+</span></span><span class=line><span class=cl>FirebirdDatabase: numeric
+</span></span><span class=line><span class=cl>DerbyDatabase: numeric
+</span></span><span class=line><span class=cl>InformixDatabase: numeric
+</span></span><span class=line><span class=cl>SybaseDatabase: numeric
+</span></span><span class=line><span class=cl>SybaseASADatabase: numeric
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>blob
+</span></span><span class=line><span class=cl>MySQLDatabase: LONGBLOB
+</span></span><span class=line><span class=cl>SQLiteDatabase: BLOB
+</span></span><span class=line><span class=cl>H2Database: BLOB
+</span></span><span class=line><span class=cl>PostgresDatabase: BYTEA
+</span></span><span class=line><span class=cl>UnsupportedDatabase: BLOB
+</span></span><span class=line><span class=cl>DB2Database: BLOB
+</span></span><span class=line><span class=cl>MSSQLDatabase: [varbinary](MAX)
+</span></span><span class=line><span class=cl>OracleDatabase: BLOB
+</span></span><span class=line><span class=cl>HsqlDatabase: BLOB
+</span></span><span class=line><span class=cl>FirebirdDatabase: BLOB
+</span></span><span class=line><span class=cl>DerbyDatabase: BLOB
+</span></span><span class=line><span class=cl>InformixDatabase: BLOB
+</span></span><span class=line><span class=cl>SybaseDatabase: IMAGE
+</span></span><span class=line><span class=cl>SybaseASADatabase: LONG BINARY
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>function
+</span></span><span class=line><span class=cl>MySQLDatabase: FUNCTION
+</span></span><span class=line><span class=cl>SQLiteDatabase: FUNCTION
+</span></span><span class=line><span class=cl>H2Database: FUNCTION
+</span></span><span class=line><span class=cl>PostgresDatabase: FUNCTION
+</span></span><span class=line><span class=cl>UnsupportedDatabase: FUNCTION
+</span></span><span class=line><span class=cl>DB2Database: FUNCTION
+</span></span><span class=line><span class=cl>MSSQLDatabase: [function]
+</span></span><span class=line><span class=cl>OracleDatabase: FUNCTION
+</span></span><span class=line><span class=cl>HsqlDatabase: FUNCTION
+</span></span><span class=line><span class=cl>FirebirdDatabase: FUNCTION
+</span></span><span class=line><span class=cl>DerbyDatabase: FUNCTION
+</span></span><span class=line><span class=cl>InformixDatabase: FUNCTION
+</span></span><span class=line><span class=cl>SybaseDatabase: FUNCTION
+</span></span><span class=line><span class=cl>SybaseASADatabase: FUNCTION
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>UNKNOWN
+</span></span><span class=line><span class=cl>MySQLDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>SQLiteDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>H2Database: UNKNOWN
+</span></span><span class=line><span class=cl>PostgresDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>UnsupportedDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>DB2Database: UNKNOWN
+</span></span><span class=line><span class=cl>MSSQLDatabase: [UNKNOWN]
+</span></span><span class=line><span class=cl>OracleDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>HsqlDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>FirebirdDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>DerbyDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>InformixDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>SybaseDatabase: UNKNOWN
+</span></span><span class=line><span class=cl>SybaseASADatabase: UNKNOWN
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>datetime
+</span></span><span class=line><span class=cl>MySQLDatabase: datetime
+</span></span><span class=line><span class=cl>SQLiteDatabase: TEXT
+</span></span><span class=line><span class=cl>H2Database: TIMESTAMP
+</span></span><span class=line><span class=cl>PostgresDatabase: TIMESTAMP WITHOUT TIME ZONE
+</span></span><span class=line><span class=cl>UnsupportedDatabase: datetime
+</span></span><span class=line><span class=cl>DB2Database: TIMESTAMP
+</span></span><span class=line><span class=cl>MSSQLDatabase: [datetime]
+</span></span><span class=line><span class=cl>OracleDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>HsqlDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>FirebirdDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>DerbyDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>InformixDatabase: DATETIME YEAR TO FRACTION(5)
+</span></span><span class=line><span class=cl>SybaseDatabase: datetime
+</span></span><span class=line><span class=cl>SybaseASADatabase: datetime
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>time
+</span></span><span class=line><span class=cl>MySQLDatabase: time
+</span></span><span class=line><span class=cl>SQLiteDatabase: time
+</span></span><span class=line><span class=cl>H2Database: time
+</span></span><span class=line><span class=cl>PostgresDatabase: TIME WITHOUT TIME ZONE
+</span></span><span class=line><span class=cl>UnsupportedDatabase: time
+</span></span><span class=line><span class=cl>DB2Database: time
+</span></span><span class=line><span class=cl>MSSQLDatabase: [time](7)
+</span></span><span class=line><span class=cl>OracleDatabase: DATE
+</span></span><span class=line><span class=cl>HsqlDatabase: time
+</span></span><span class=line><span class=cl>FirebirdDatabase: time
+</span></span><span class=line><span class=cl>DerbyDatabase: time
+</span></span><span class=line><span class=cl>InformixDatabase: INTERVAL HOUR TO FRACTION(5)
+</span></span><span class=line><span class=cl>SybaseDatabase: time
+</span></span><span class=line><span class=cl>SybaseASADatabase: time
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>timestamp
+</span></span><span class=line><span class=cl>MySQLDatabase: timestamp
+</span></span><span class=line><span class=cl>SQLiteDatabase: TEXT
+</span></span><span class=line><span class=cl>H2Database: TIMESTAMP
+</span></span><span class=line><span class=cl>PostgresDatabase: TIMESTAMP WITHOUT TIME ZONE
+</span></span><span class=line><span class=cl>UnsupportedDatabase: timestamp
+</span></span><span class=line><span class=cl>DB2Database: timestamp
+</span></span><span class=line><span class=cl>MSSQLDatabase: [datetime]
+</span></span><span class=line><span class=cl>OracleDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>HsqlDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>FirebirdDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>DerbyDatabase: TIMESTAMP
+</span></span><span class=line><span class=cl>InformixDatabase: DATETIME YEAR TO FRACTION(5)
+</span></span><span class=line><span class=cl>SybaseDatabase: datetime
+</span></span><span class=line><span class=cl>SybaseASADatabase: timestamp
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>date
+</span></span><span class=line><span class=cl>MySQLDatabase: date
+</span></span><span class=line><span class=cl>SQLiteDatabase: date
+</span></span><span class=line><span class=cl>H2Database: date
+</span></span><span class=line><span class=cl>PostgresDatabase: date
+</span></span><span class=line><span class=cl>UnsupportedDatabase: date
+</span></span><span class=line><span class=cl>DB2Database: date
+</span></span><span class=line><span class=cl>MSSQLDatabase: [date]
+</span></span><span class=line><span class=cl>OracleDatabase: date
+</span></span><span class=line><span class=cl>HsqlDatabase: date
+</span></span><span class=line><span class=cl>FirebirdDatabase: date
+</span></span><span class=line><span class=cl>DerbyDatabase: date
+</span></span><span class=line><span class=cl>InformixDatabase: date
+</span></span><span class=line><span class=cl>SybaseDatabase: date
+</span></span><span class=line><span class=cl>SybaseASADatabase: date
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>char
+</span></span><span class=line><span class=cl>MySQLDatabase: CHAR
+</span></span><span class=line><span class=cl>SQLiteDatabase: CHAR
+</span></span><span class=line><span class=cl>H2Database: CHAR
+</span></span><span class=line><span class=cl>PostgresDatabase: CHAR
+</span></span><span class=line><span class=cl>UnsupportedDatabase: CHAR
+</span></span><span class=line><span class=cl>DB2Database: CHAR
+</span></span><span class=line><span class=cl>MSSQLDatabase: [char](1)
+</span></span><span class=line><span class=cl>OracleDatabase: CHAR
+</span></span><span class=line><span class=cl>HsqlDatabase: CHAR
+</span></span><span class=line><span class=cl>FirebirdDatabase: CHAR
+</span></span><span class=line><span class=cl>DerbyDatabase: CHAR
+</span></span><span class=line><span class=cl>InformixDatabase: CHAR
+</span></span><span class=line><span class=cl>SybaseDatabase: CHAR
+</span></span><span class=line><span class=cl>SybaseASADatabase: CHAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>varchar
+</span></span><span class=line><span class=cl>MySQLDatabase: VARCHAR
+</span></span><span class=line><span class=cl>SQLiteDatabase: VARCHAR
+</span></span><span class=line><span class=cl>H2Database: VARCHAR
+</span></span><span class=line><span class=cl>PostgresDatabase: VARCHAR
+</span></span><span class=line><span class=cl>UnsupportedDatabase: VARCHAR
+</span></span><span class=line><span class=cl>DB2Database: VARCHAR
+</span></span><span class=line><span class=cl>MSSQLDatabase: [varchar](1)
+</span></span><span class=line><span class=cl>OracleDatabase: VARCHAR2
+</span></span><span class=line><span class=cl>HsqlDatabase: VARCHAR
+</span></span><span class=line><span class=cl>FirebirdDatabase: VARCHAR
+</span></span><span class=line><span class=cl>DerbyDatabase: VARCHAR
+</span></span><span class=line><span class=cl>InformixDatabase: VARCHAR
+</span></span><span class=line><span class=cl>SybaseDatabase: VARCHAR
+</span></span><span class=line><span class=cl>SybaseASADatabase: VARCHAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>nchar
+</span></span><span class=line><span class=cl>MySQLDatabase: NCHAR
+</span></span><span class=line><span class=cl>SQLiteDatabase: NCHAR
+</span></span><span class=line><span class=cl>H2Database: NCHAR
+</span></span><span class=line><span class=cl>PostgresDatabase: NCHAR
+</span></span><span class=line><span class=cl>UnsupportedDatabase: NCHAR
+</span></span><span class=line><span class=cl>DB2Database: NCHAR
+</span></span><span class=line><span class=cl>MSSQLDatabase: [nchar](1)
+</span></span><span class=line><span class=cl>OracleDatabase: NCHAR
+</span></span><span class=line><span class=cl>HsqlDatabase: CHAR
+</span></span><span class=line><span class=cl>FirebirdDatabase: NCHAR
+</span></span><span class=line><span class=cl>DerbyDatabase: NCHAR
+</span></span><span class=line><span class=cl>InformixDatabase: NCHAR
+</span></span><span class=line><span class=cl>SybaseDatabase: NCHAR
+</span></span><span class=line><span class=cl>SybaseASADatabase: NCHAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>nvarchar
+</span></span><span class=line><span class=cl>MySQLDatabase: NVARCHAR
+</span></span><span class=line><span class=cl>SQLiteDatabase: NVARCHAR
+</span></span><span class=line><span class=cl>H2Database: NVARCHAR
+</span></span><span class=line><span class=cl>PostgresDatabase: VARCHAR
+</span></span><span class=line><span class=cl>UnsupportedDatabase: NVARCHAR
+</span></span><span class=line><span class=cl>DB2Database: NVARCHAR
+</span></span><span class=line><span class=cl>MSSQLDatabase: [nvarchar](1)
+</span></span><span class=line><span class=cl>OracleDatabase: NVARCHAR2
+</span></span><span class=line><span class=cl>HsqlDatabase: VARCHAR
+</span></span><span class=line><span class=cl>FirebirdDatabase: NVARCHAR
+</span></span><span class=line><span class=cl>DerbyDatabase: VARCHAR
+</span></span><span class=line><span class=cl>InformixDatabase: NVARCHAR
+</span></span><span class=line><span class=cl>SybaseDatabase: NVARCHAR
+</span></span><span class=line><span class=cl>SybaseASADatabase: NVARCHAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>clob
+</span></span><span class=line><span class=cl>MySQLDatabase: LONGTEXT
+</span></span><span class=line><span class=cl>SQLiteDatabase: TEXT
+</span></span><span class=line><span class=cl>H2Database: CLOB
+</span></span><span class=line><span class=cl>PostgresDatabase: TEXT
+</span></span><span class=line><span class=cl>UnsupportedDatabase: CLOB
+</span></span><span class=line><span class=cl>DB2Database: CLOB
+</span></span><span class=line><span class=cl>MSSQLDatabase: [varchar](MAX)
+</span></span><span class=line><span class=cl>OracleDatabase: CLOB
+</span></span><span class=line><span class=cl>HsqlDatabase: CLOB
+</span></span><span class=line><span class=cl>FirebirdDatabase: BLOB SUB_TYPE TEXT
+</span></span><span class=line><span class=cl>DerbyDatabase: CLOB
+</span></span><span class=line><span class=cl>InformixDatabase: CLOB
+</span></span><span class=line><span class=cl>SybaseDatabase: TEXT
+</span></span><span class=line><span class=cl>SybaseASADatabase: LONG VARCHAR
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>currency
+</span></span><span class=line><span class=cl>MySQLDatabase: DECIMAL
+</span></span><span class=line><span class=cl>SQLiteDatabase: REAL
+</span></span><span class=line><span class=cl>H2Database: DECIMAL
+</span></span><span class=line><span class=cl>PostgresDatabase: DECIMAL
+</span></span><span class=line><span class=cl>UnsupportedDatabase: DECIMAL
+</span></span><span class=line><span class=cl>DB2Database: DECIMAL(19, 4)
+</span></span><span class=line><span class=cl>MSSQLDatabase: [money]
+</span></span><span class=line><span class=cl>OracleDatabase: NUMBER(15, 2)
+</span></span><span class=line><span class=cl>HsqlDatabase: DECIMAL
+</span></span><span class=line><span class=cl>FirebirdDatabase: DECIMAL(18, 4)
+</span></span><span class=line><span class=cl>DerbyDatabase: DECIMAL
+</span></span><span class=line><span class=cl>InformixDatabase: MONEY
+</span></span><span class=line><span class=cl>SybaseDatabase: MONEY
+</span></span><span class=line><span class=cl>SybaseASADatabase: MONEY
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>uuid
+</span></span><span class=line><span class=cl>MySQLDatabase: char(36)
+</span></span><span class=line><span class=cl>SQLiteDatabase: TEXT
+</span></span><span class=line><span class=cl>H2Database: UUID
+</span></span><span class=line><span class=cl>PostgresDatabase: UUID
+</span></span><span class=line><span class=cl>UnsupportedDatabase: char(36)
+</span></span><span class=line><span class=cl>DB2Database: char(36)
+</span></span><span class=line><span class=cl>MSSQLDatabase: [uniqueidentifier]
+</span></span><span class=line><span class=cl>OracleDatabase: RAW(16)
+</span></span><span class=line><span class=cl>HsqlDatabase: char(36)
+</span></span><span class=line><span class=cl>FirebirdDatabase: char(36)
+</span></span><span class=line><span class=cl>DerbyDatabase: char(36)
+</span></span><span class=line><span class=cl>InformixDatabase: char(36)
+</span></span><span class=line><span class=cl>SybaseDatabase: UNIQUEIDENTIFIER
+</span></span><span class=line><span class=cl>SybaseASADatabase: UNIQUEIDENTIFIER
+</span></span></code></pre></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2017-11-28</span></div></div><div class=post-info-line><div class=post-info-md></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/posts/%E8%A7%A3%E5%86%B3kubespray%E5%AE%89%E8%A3%85k8s%E9%9B%86%E7%BE%A4%E7%9A%84check-certs-set-sync-certs-to-true-%E9%94%99%E8%AF%AF/ class=prev rel=prev title="解决kubespray 安装 k8s 集群的Check_certs | Set 'sync_certs' to true'  错误"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>解决kubespray 安装 k8s 集群的Check_certs | Set 'sync_certs' to true' 错误</a>
+<a href=/posts/%E4%BD%BF%E7%94%A8kubespray%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/ class=next rel=next title=使用kubespray部署kubernetes集群>使用kubespray部署kubernetes集群<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5524310624522502" crossorigin=anonymous></script></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>陈</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><script type=text/javascript src=https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js></script><script type=text/javascript src=https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:50},comment:{}}</script><script type=text/javascript src=/js/theme.min.js></script></body></html>
