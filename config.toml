@@ -41,6 +41,13 @@ theme = "LoveIt"
     enable = false
   [params.home.profile]
     subtitle = ''
+  [params.analytics]
+    enable = true
+    [params.analytics.google]
+      id = "G-P341M2MLW1"
+      # whether to anonymize IP
+      # 是否匿名化用户 IP
+      anonymizeIP = true
 # Markup related configuration in Hugo
 [markup]
   # Syntax Highlighting (https://gohugo.io/content-management/syntax-highlighting)
