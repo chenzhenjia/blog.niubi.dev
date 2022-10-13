@@ -1,4 +1,14 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>所有文章 - 陈</title><link>https://blog.niubi.dev/posts/</link><description>所有文章 | 陈</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 24 Oct 2019 10:24:53 +0800</lastBuildDate><atom:link href="https://blog.niubi.dev/posts/" rel="self" type="application/rss+xml"/><item><title>SpringBoot配置VueJs或者React的history路由</title><link>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</link><pubDate>Thu, 24 Oct 2019 10:24:53 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</guid><description><![CDATA[一般在配置前端的文件夹的时候都会指定一个路径，如果你想使用根路径我这种方法不支持根路径，请使用另外一种支持根路径的配置方法。
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>所有文章 - 陈</title><link>https://blog.niubi.dev/posts/</link><description>所有文章 | 陈</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 12 Oct 2022 14:25:00 +0800</lastBuildDate><atom:link href="https://blog.niubi.dev/posts/" rel="self" type="application/rss+xml"/><item><title>安装了magisk的pixel4xl升级到安卓13</title><link>https://blog.niubi.dev/posts/%E5%AE%89%E8%A3%85%E4%BA%86magisk%E7%9A%84pixel4xl%E5%8D%87%E7%BA%A7%E5%88%B0%E5%AE%89%E5%8D%9313/</link><pubDate>Wed, 12 Oct 2022 14:25:00 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/%E5%AE%89%E8%A3%85%E4%BA%86magisk%E7%9A%84pixel4xl%E5%8D%87%E7%BA%A7%E5%88%B0%E5%AE%89%E5%8D%9313/</guid><description>原因 我的pxiel4xl在线升级安卓13的时候报升级出错，后来找了一下原因，是因为系统更新（OTA）更新的时候，会检测验证system分区是否完整，如果被修改，则会导致更新失败，所以在下载的时候直接提示安装失败。刷Magisk时修改了boot.img这个system分区的文件，所以刷Magisk后不能直接安装OTA更新。
+解决方法 准备工作 先关闭开发者设置中的系统自动更新 先卸载magisk 打开Magisk 点击卸载Magisk 点击弹出窗口的还原原厂镜像 还原远程镜像会可能会提示 stock backup does not exist 原厂镜像备份不存在 解决原厂镜像不存在的问题 如果还原成功不需要进行该操作
+在设置里面打开关于手机-&amp;gt;版本号
+我在这里的版本号就是 221005.002 ，你需要注意你的安装版本号
+下载对应的镜像
+下载网页
+找到你手机对应的版本号下载
+解压boot.img
+在下载好的压缩包找到 image- 开头的压缩包 再从这个image-开头的压缩包里面提取boot.img
+制作准备还原的boot.img
+在电脑上push boot.img到手机上 adb push boot.img /sdcard/boot.img 进入adb shell adb shell su 分别执行一下命令 SHA1=$(cat $(magisk --path)/.magisk/config | grep SHA1 | cut -d &amp;#39;=&amp;#39; -f 2) gzip -9f /sdcard/boot.img mkdir /data/magisk_backup_${SHA1} mv /sdcard/boot.img.gz /data/magisk_backup_${SHA1}/boot.img.gz chmod -R 755 /data/magisk_backup_${SHA1} chown -R root.root /data/magisk_backup_${SHA1} 上面的操作都成功了就可以了</description></item><item><title>SpringBoot配置VueJs或者React的history路由</title><link>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</link><pubDate>Thu, 24 Oct 2019 10:24:53 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</guid><description><![CDATA[一般在配置前端的文件夹的时候都会指定一个路径，如果你想使用根路径我这种方法不支持根路径，请使用另外一种支持根路径的配置方法。
 配置 比如把前端放在 h5 路径下面
 把前端打包的文件放在resource/META-INF/h5 目录
 修改Spring Boot WebMvc的配置
@@ -67,10 +77,4 @@ sudo apt-key fingerprint 0EBFCD88 查看是否能找到 9DC8 5822 9FC7 DD38 854A
 第二步（授权用户能进行远程连接）
 grant all privileges on *.* to root@&quot;%&quot; identified by &quot;password&quot; with grant option; flush privileges;
 第一行命令解释如下，. ：第一个代表数据库名；第二个代表表名。这里的意思是所有数据库里的所有表都授权给用户。root：授予root账号。 “%”：表示授权的用户IP可以指定，这里代表任意的IP地址都能访问MySQL数据库。“password”：分配账号对应的密码，这里密码自己替换成 你的mysql root帐号密码。
-第二行命令是刷新权限信息，也即是让我们所作的设置马上生效。]]></description></item><item><title>k8s 安装ingress-nginx后代理kubernetes-dashboard</title><link>https://blog.niubi.dev/posts/k8s%E5%AE%89%E8%A3%85ingress-nginx%E5%90%8E%E4%BB%A3%E7%90%86kubernetes-dashboard/</link><pubDate>Mon, 30 Apr 2018 19:06:43 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/k8s%E5%AE%89%E8%A3%85ingress-nginx%E5%90%8E%E4%BB%A3%E7%90%86kubernetes-dashboard/</guid><description><![CDATA[准备 k8s 集群，版本为1.9.5 kubernetes-dashboard 为 v1.8.3 安装 kubernetes-dashboard 直接使用官方的命令安装
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/master/src/deploy/recommended/kubernetes-dashboard.yaml 暴露端口，以便访问，用完之后改回
-kubectl -n kube-system edit service kubernetes-dashboard 按 i 进入插入模式 修改 type 值 ClusterIP 为NodePort 然后按 esc ，再按 x 回车保存
-查看端口
-kubectl -n kube-system get service kubernetes-dashboard NAME CLUSTER-IP EXTERNAL-IP PORT(S) AGE kubernetes-dashboard 10.100.124.90 &lt;nodes&gt; 443:31707/TCP 21h 其中 31707就是外部可以访问的 ip
-创建管理员 // admin-role.yaml
-kind: ClusterRoleBinding apiVersion: rbac.authorization.k8s.io/v1beta1 metadata: name: admin annotations: rbac.authorization.kubernetes.io/autoupdate: &#34;true&#34; roleRef: kind: ClusterRole name: cluster-admin apiGroup: rbac.]]></description></item></channel></rss>
+第二行命令是刷新权限信息，也即是让我们所作的设置马上生效。]]></description></item></channel></rss>
