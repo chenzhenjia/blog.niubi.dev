@@ -159,7 +159,7 @@ esac
 3. 指定应用重新的内存等等
    在 my-app.jar 的同一个文件夹创建一个 my-app.conf 文件。
    _注意:配置文件必须和jar包的文件名一直才生效。_
-   其它配置请看<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html/deployment-install.html#deployment-script-customization-when-it-runs" _blank>更多配置</a>
+   其它配置请看 [更多配置](https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/html/deployment-install.html#deployment-script-customization-when-it-runs)
    ```text
    # 指定内存为256
    JAVA_OPTS="-Xmx256m -Xms256m"
