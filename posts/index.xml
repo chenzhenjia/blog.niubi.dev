@@ -1,4 +1,4 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>所有文章 - 陈</title><link>https://blog.niubi.dev/posts/</link><description>所有文章 | 陈</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 13 Mar 2025 20:00:00 +0800</lastBuildDate><atom:link href="https://blog.niubi.dev/posts/" rel="self" type="application/rss+xml"/><item><title>utm加载qcow2镜像安装linux显示Display Output is Not Active</title><link>https://blog.niubi.dev/posts/2025/03/1/</link><pubDate>Thu, 13 Mar 2025 20:00:00 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/2025/03/1/</guid><description><![CDATA[<ol>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>所有文章 - 陈</title><link>https://blog.niubi.dev/posts/</link><description>所有文章 | 陈</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 13 Mar 2025 20:00:00 +0800</lastBuildDate><atom:link href="https://blog.niubi.dev/posts/" rel="self" type="application/rss+xml"/><item><title>utm加载qcow2镜像安装linux显示Display Output is Not Active</title><link>https://blog.niubi.dev/posts/2025/03/1/</link><pubDate>Thu, 13 Mar 2025 20:00:00 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/2025/03/1/</guid><description><![CDATA[<ol>
 <li>点击创建一个虚拟机
 </li>
 <li>虚拟化点击其它
@@ -19,7 +19,7 @@
 </li>
 <li>保存虚拟机设置
 启动虚拟机就会弹出两个窗口，一个创建不能显示内容，但是另外一个是有linux终端，这样就可以操作Linux，下一个文章解决qcow2安装后扩容</li>
-</ol>]]></description></item><item><title>安装了magisk的pixel4xl升级到安卓13</title><link>https://blog.niubi.dev/posts/%E5%AE%89%E8%A3%85%E4%BA%86magisk%E7%9A%84pixel4xl%E5%8D%87%E7%BA%A7%E5%88%B0%E5%AE%89%E5%8D%9313/</link><pubDate>Wed, 12 Oct 2022 14:25:00 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/%E5%AE%89%E8%A3%85%E4%BA%86magisk%E7%9A%84pixel4xl%E5%8D%87%E7%BA%A7%E5%88%B0%E5%AE%89%E5%8D%9313/</guid><description><![CDATA[<h2 id="原因">原因</h2>
+</ol>]]></description></item><item><title>安装了magisk的pixel4xl升级到安卓13</title><link>https://blog.niubi.dev/posts/%E5%AE%89%E8%A3%85%E4%BA%86magisk%E7%9A%84pixel4xl%E5%8D%87%E7%BA%A7%E5%88%B0%E5%AE%89%E5%8D%9313/</link><pubDate>Wed, 12 Oct 2022 14:25:00 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/%E5%AE%89%E8%A3%85%E4%BA%86magisk%E7%9A%84pixel4xl%E5%8D%87%E7%BA%A7%E5%88%B0%E5%AE%89%E5%8D%9313/</guid><description><![CDATA[<h2 id="原因">原因</h2>
 <p>我的pxiel4xl在线升级安卓13的时候报升级出错，后来找了一下原因，是因为系统更新（OTA）更新的时候，会检测验证system分区是否完整，如果被修改，则会导致更新失败，所以在下载的时候直接提示安装失败。刷Magisk时修改了boot.img这个system分区的文件，所以刷Magisk后不能直接安装OTA更新。</p>
 <h2 id="解决方法">解决方法</h2>
 <h3 id="准备工作">准备工作</h3>
@@ -90,7 +90,7 @@
 </span></span><span class="line"><span class="cl">mv /sdcard/boot.img.gz /data/magisk_backup_<span class="si">${</span><span class="nv">SHA1</span><span class="si">}</span>/boot.img.gz
 </span></span><span class="line"><span class="cl">chmod -R <span class="m">755</span> /data/magisk_backup_<span class="si">${</span><span class="nv">SHA1</span><span class="si">}</span>
 </span></span><span class="line"><span class="cl">chown -R root.root /data/magisk_backup_<span class="si">${</span><span class="nv">SHA1</span><span class="si">}</span></span></span></code></pre></div></div>
-<p>上面的操作都成功了就可以了</p>]]></description></item><item><title>SpringBoot配置VueJs或者React的history路由</title><link>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</link><pubDate>Thu, 24 Oct 2019 10:24:53 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</guid><description><![CDATA[<p>一般在配置前端的文件夹的时候都会指定一个路径，如果你想使用根路径我这种方法不支持根路径，请使用另外一种支持根路径的配置方法。</p>
+<p>上面的操作都成功了就可以了</p>]]></description></item><item><title>SpringBoot配置VueJs或者React的history路由</title><link>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</link><pubDate>Thu, 24 Oct 2019 10:24:53 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/springboot%E9%85%8D%E7%BD%AEvuejs%E6%88%96%E8%80%85react%E7%9A%84history%E8%B7%AF%E7%94%B1/</guid><description><![CDATA[<p>一般在配置前端的文件夹的时候都会指定一个路径，如果你想使用根路径我这种方法不支持根路径，请使用另外一种支持根路径的配置方法。</p>
 <h2 id="配置">配置</h2>
 <p>比如把前端放在 h5 路径下面</p>
 <ol>
@@ -133,7 +133,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="n">registry</span><span class="p">.</span><span class="na">addViewController</span><span class="p">(</span><span class="s">&#34;/h5/{spring:\\w+}/**{spring:?!(\\.js|\\.css)$}&#34;</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="p">.</span><span class="na">setViewName</span><span class="p">(</span><span class="s">&#34;forward:/h5/index.html&#34;</span><span class="p">);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="p">}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span></span></span></code></pre></div></div>]]></description></item><item><title>在 centos 上搭建k3s 集群</title><link>https://blog.niubi.dev/posts/%E5%9C%A8centos%E4%B8%8A%E6%90%AD%E5%BB%BAk3s%E9%9B%86%E7%BE%A4/</link><pubDate>Sat, 24 Aug 2019 15:38:25 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/%E5%9C%A8centos%E4%B8%8A%E6%90%AD%E5%BB%BAk3s%E9%9B%86%E7%BE%A4/</guid><description><![CDATA[<h2 id="介绍-k3s">介绍 k3s</h2>
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span></span></span></code></pre></div></div>]]></description></item><item><title>在 centos 上搭建k3s 集群</title><link>https://blog.niubi.dev/posts/%E5%9C%A8centos%E4%B8%8A%E6%90%AD%E5%BB%BAk3s%E9%9B%86%E7%BE%A4/</link><pubDate>Sat, 24 Aug 2019 15:38:25 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/%E5%9C%A8centos%E4%B8%8A%E6%90%AD%E5%BB%BAk3s%E9%9B%86%E7%BE%A4/</guid><description><![CDATA[<h2 id="介绍-k3s">介绍 k3s</h2>
 <p>k3s 是Rancher Labs（以下简称Rancher）宣布推出轻量级Kubernetes发行版K3s（已开源），这款产品专为在资源有限的环境中运行Kubernetes的研发和运维人员设计。Rancher此次发布的K3s项目，将满足在边缘计算环境中运行在x86、ARM64和ARMv7处理器上的小型、易于管理的Kubernetes集群日益增长的需求。</p>
 <h2 id="开始安装">开始安装</h2>
 <ol>
@@ -161,7 +161,7 @@
         <span class="ellipses"><i class="fas fa-ellipsis-h fa-fw" aria-hidden="true"></i></span>
         <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl -sfL https://get.k3s.io <span class="p">|</span> <span class="nv">INSTALL_K3S_EXEC</span><span class="o">=</span><span class="s2">&#34;server --no-deploy traefik --docker&#34;</span> sh -s -</span></span></code></pre></div></div>
-<p>自己下载安装:</p>]]></description></item><item><title>Golang在Windows上同时编译64位和32位可执行程序</title><link>https://blog.niubi.dev/posts/golang%E5%9C%A8windows%E4%B8%8A%E5%90%8C%E6%97%B6%E7%BC%96%E8%AF%9164%E4%BD%8D%E5%92%8C32%E4%BD%8D%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F/</link><pubDate>Fri, 02 Nov 2018 18:38:39 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/golang%E5%9C%A8windows%E4%B8%8A%E5%90%8C%E6%97%B6%E7%BC%96%E8%AF%9164%E4%BD%8D%E5%92%8C32%E4%BD%8D%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F/</guid><description><![CDATA[<h2 id="golang-在-windows-上同时编译64位和32位可执行程序">Golang 在 Windows 上同时编译64位和32位可执行程序</h2>
+<p>自己下载安装:</p>]]></description></item><item><title>Golang在Windows上同时编译64位和32位可执行程序</title><link>https://blog.niubi.dev/posts/golang%E5%9C%A8windows%E4%B8%8A%E5%90%8C%E6%97%B6%E7%BC%96%E8%AF%9164%E4%BD%8D%E5%92%8C32%E4%BD%8D%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F/</link><pubDate>Fri, 02 Nov 2018 18:38:39 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/golang%E5%9C%A8windows%E4%B8%8A%E5%90%8C%E6%97%B6%E7%BC%96%E8%AF%9164%E4%BD%8D%E5%92%8C32%E4%BD%8D%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F/</guid><description><![CDATA[<h2 id="golang-在-windows-上同时编译64位和32位可执行程序">Golang 在 Windows 上同时编译64位和32位可执行程序</h2>
 <p><em>需要在windows上同时编译需要64位的系统，32位只能编译32位的可执行程序。</em></p>
 <ul>
 <li>编译32位
@@ -190,7 +190,7 @@
 <ul>
 <li>
 <p>下载 MinGW64，注意请选择 _x86_64-posix-seh
-<a href="https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-posix/seh/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z" target="_blank" rel="noopener noreffer ">MinGW64 8.1.0 下载地址</a></p>]]></description></item><item><title>Spring MVC 自定义静态资源下载</title><link>https://blog.niubi.dev/posts/spring-mvc-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</link><pubDate>Tue, 04 Sep 2018 14:18:53 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/spring-mvc-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</guid><description><![CDATA[<p>在 Spring MVC 中上传文件后把文件保存在本地，但是数据库保存了一份路径，所有需要实现下载文件，网上的教程一般都是自己写一个Controller 去下载，但是我这里直接使用Spring MVC的 <code>ResourceHttpRequestHandler</code> 实现动态下载静态资源，只需一点点代码然后加一段配置就可以实现下载附件功能。</p>
+<a href="https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win64/Personal%20Builds/mingw-builds/8.1.0/threads-posix/seh/x86_64-8.1.0-release-posix-seh-rt_v6-rev0.7z" target="_blank" rel="noopener noreffer ">MinGW64 8.1.0 下载地址</a></p>]]></description></item><item><title>Spring MVC 自定义静态资源下载</title><link>https://blog.niubi.dev/posts/spring-mvc-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</link><pubDate>Tue, 04 Sep 2018 14:18:53 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/spring-mvc-%E8%87%AA%E5%AE%9A%E4%B9%89%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E4%B8%8B%E8%BD%BD/</guid><description><![CDATA[<p>在 Spring MVC 中上传文件后把文件保存在本地，但是数据库保存了一份路径，所有需要实现下载文件，网上的教程一般都是自己写一个Controller 去下载，但是我这里直接使用Spring MVC的 <code>ResourceHttpRequestHandler</code> 实现动态下载静态资源，只需一点点代码然后加一段配置就可以实现下载附件功能。</p>
 <h2 id="第一步">第一步</h2>
 <p>自定义一个Handler，并重写 <code>ResourceHttpRequestHandler</code> 的 <code>processPath</code> 方法。</p>
 <div class="code-block code-line-numbers" style="counter-reset: code-block 0">
@@ -216,7 +216,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">}</span></span></span></code></pre></div></div>
 <h2 id="第二部配置">第二部配置</h2>
-<p>在 Spring Boot 中添加一下配置，注意LocationValues 的路径，必须以 <code>/</code> 结尾，访问本地文件必须有 <code>file:</code> ，不然会访问不到，报404</p>]]></description></item><item><title>优雅开启和关闭Spring Cloud项目</title><link>https://blog.niubi.dev/posts/%E4%BC%98%E9%9B%85%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADspringcloud%E9%A1%B9%E7%9B%AE/</link><pubDate>Sat, 18 Aug 2018 12:59:08 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/%E4%BC%98%E9%9B%85%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADspringcloud%E9%A1%B9%E7%9B%AE/</guid><description><![CDATA[<h2 id="第一种方式使用脚本不推荐">第一种方式,使用脚本(不推荐)</h2>
+<p>在 Spring Boot 中添加一下配置，注意LocationValues 的路径，必须以 <code>/</code> 结尾，访问本地文件必须有 <code>file:</code> ，不然会访问不到，报404</p>]]></description></item><item><title>优雅开启和关闭Spring Cloud项目</title><link>https://blog.niubi.dev/posts/%E4%BC%98%E9%9B%85%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADspringcloud%E9%A1%B9%E7%9B%AE/</link><pubDate>Sat, 18 Aug 2018 12:59:08 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/%E4%BC%98%E9%9B%85%E5%BC%80%E5%90%AF%E5%92%8C%E5%85%B3%E9%97%ADspringcloud%E9%A1%B9%E7%9B%AE/</guid><description><![CDATA[<h2 id="第一种方式使用脚本不推荐">第一种方式,使用脚本(不推荐)</h2>
 <p>使用命令行开启和关闭，直接 kill 掉Spring boot 进程，这样会导致Spring Cloud 项目不会去 注册中心把自己销毁掉，明明项目已经关闭，但是注册中心还是显示在线，而且这样还会有一个弊端，如果需
 要监听Spring Boot 项目的生命周期钩子，比如项目启动和关闭，也会监听不到。
 <code>/home/dev/app.sh</code></p>
@@ -332,7 +332,7 @@
         <span class="copy" title="复制到剪贴板"><i class="far fa-copy fa-fw" aria-hidden="true"></i></span>
     </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./app.sh restart myapp.jar </span></span></code></pre></div></div>
 <h2 id="第二种方式打包可执行jar推荐">第二种方式,打包可执行jar(推荐)</h2>
-<p>打包可执行的jar可以支持 systemctl 启动，也可以支持脚本启动，并且执行关闭后会冲注册中心销毁掉服务，并且会在启动和关闭会调用Spring Boot 的生命周期事件。</p>]]></description></item><item><title>expect 的用法</title><link>https://blog.niubi.dev/posts/expect%E7%9A%84%E7%94%A8%E6%B3%95/</link><pubDate>Fri, 17 Aug 2018 11:52:44 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/expect%E7%9A%84%E7%94%A8%E6%B3%95/</guid><description><![CDATA[<h3 id="usrbinexpect">!/usr/bin/expect</h3>
+<p>打包可执行的jar可以支持 systemctl 启动，也可以支持脚本启动，并且执行关闭后会冲注册中心销毁掉服务，并且会在启动和关闭会调用Spring Boot 的生命周期事件。</p>]]></description></item><item><title>expect 的用法</title><link>https://blog.niubi.dev/posts/expect%E7%9A%84%E7%94%A8%E6%B3%95/</link><pubDate>Fri, 17 Aug 2018 11:52:44 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/expect%E7%9A%84%E7%94%A8%E6%B3%95/</guid><description><![CDATA[<h3 id="usrbinexpect">!/usr/bin/expect</h3>
 <p>    告诉操作系统脚本里的代码使用那一个<code>shell</code>来执行。</p>
 <blockquote>
 <p>注意：这段代码必须在第一行。</p></blockquote>
@@ -368,7 +368,7 @@
 </span></span><span class="line"><span class="cl">	<span class="s2">&#34;yes/no&#34;</span> <span class="o">{</span> send <span class="s2">&#34;yes\r&#34;</span><span class="p">;</span> exp_continue <span class="o">}</span>
 </span></span><span class="line"><span class="cl">	<span class="s2">&#34;Password:&#34;</span> <span class="o">{</span> send <span class="s2">&#34;</span><span class="nv">$password</span><span class="s2">\r&#34;</span> <span class="o">}</span>
 </span></span><span class="line"><span class="cl">	<span class="o">}</span>
-</span></span><span class="line"><span class="cl">interact</span></span></code></pre></div></div>]]></description></item><item><title>Linux 各个目录的说明</title><link>https://blog.niubi.dev/posts/linux%E5%90%84%E4%B8%AA%E7%9B%AE%E5%BD%95%E7%9A%84%E8%AF%B4%E6%98%8E/</link><pubDate>Fri, 17 Aug 2018 11:52:00 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/linux%E5%90%84%E4%B8%AA%E7%9B%AE%E5%BD%95%E7%9A%84%E8%AF%B4%E6%98%8E/</guid><description><![CDATA[<h2 id="根文件系统">根文件系统</h2>
+</span></span><span class="line"><span class="cl">interact</span></span></code></pre></div></div>]]></description></item><item><title>Linux 各个目录的说明</title><link>https://blog.niubi.dev/posts/linux%E5%90%84%E4%B8%AA%E7%9B%AE%E5%BD%95%E7%9A%84%E8%AF%B4%E6%98%8E/</link><pubDate>Fri, 17 Aug 2018 11:52:00 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/linux%E5%90%84%E4%B8%AA%E7%9B%AE%E5%BD%95%E7%9A%84%E8%AF%B4%E6%98%8E/</guid><description><![CDATA[<h2 id="根文件系统">根文件系统</h2>
 <h3 id="bin">/bin</h3>
 <p>    这一目录中存放了供所有用户使用的完成基本维护任务的命令。其中bin是binary的缩写，表示二进制文件，通常为可执行文件。
     一些常用的系统命令，如<code>cp</code>、<code>ls</code>等保存在该目录中。</p>
@@ -431,7 +431,7 @@
 <h3 id="usrx11r6">/usr/X11R6</h3>
 <p>    该目录用于保存运行X-Window所需的所有文件。该目录中还包含用于运行GUI要的配置文件和二进制文件。
 ###/usr/src
-    源代码</p>]]></description></item><item><title>Ubuntu16.04.5 安装 Docker</title><link>https://blog.niubi.dev/posts/ubuntu16.04.5%E5%AE%89%E8%A3%85docker/</link><pubDate>Fri, 17 Aug 2018 09:42:29 +0800</pubDate><author>xxxx</author><guid>https://blog.niubi.dev/posts/ubuntu16.04.5%E5%AE%89%E8%A3%85docker/</guid><description><![CDATA[<h2 id="使用-apt-get-安装">使用 apt-get 安装</h2>
+    源代码</p>]]></description></item><item><title>Ubuntu16.04.5 安装 Docker</title><link>https://blog.niubi.dev/posts/ubuntu16.04.5%E5%AE%89%E8%A3%85docker/</link><pubDate>Fri, 17 Aug 2018 09:42:29 +0800</pubDate><author>陈</author><guid>https://blog.niubi.dev/posts/ubuntu16.04.5%E5%AE%89%E8%A3%85docker/</guid><description><![CDATA[<h2 id="使用-apt-get-安装">使用 apt-get 安装</h2>
 <h3 id="卸载掉旧版本">卸载掉旧版本</h3>
 <p>命令:</p>
 <div class="code-block code-line-numbers open" style="counter-reset: code-block 0">
