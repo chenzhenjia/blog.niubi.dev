@@ -36,7 +36,7 @@ theme = "LoveIt"
   [params.footer]
     hugo = false
     copyright = true
-    custom = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5524310624522502" crossorigin="anonymous"></script>'
+    custom = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2592788502290192" crossorigin="anonymous"></script>'
   [params.page.share]
     enable = false
   [params.home.profile]
@@ -44,7 +44,7 @@ theme = "LoveIt"
   [params.analytics]
     enable = true
     [params.analytics.google]
-      id = "G-P341M2MLW1"
+      id = "G-7EER0471GM"
       # whether to anonymize IP
       # 是否匿名化用户 IP
       anonymizeIP = true
