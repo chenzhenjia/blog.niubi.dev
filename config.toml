@@ -4,11 +4,6 @@ defaultContentLanguage = 'zh-cn'
 title = '陈'
 description = '陈'
 theme = "LoveIt"
-# Author config
-[author]
-  name = "陈"
-#  email = ""
-#  link = ""
 
 # Menu config
 [menu]
@@ -31,6 +26,10 @@ theme = "LoveIt"
 [params]
   title = '陈'
   description = '陈'
+  [params.author]
+    name = "陈"
+  #  email = ""
+  #  link = ""
   [params.header.title]
     name = '陈'
   [params.footer]
